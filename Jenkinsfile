@@ -15,94 +15,50 @@ pipeline {
             }
         }
         
-        stage('Verify Workspace') {
+        stage('Debug Workspace') {
             steps {
-                // Debug: List workspace contents
-                bat 'dir'
-                bat 'dir BackEsprit'
-                bat 'dir BackEsprit\\SmartConseil-Back'
-                bat 'dir BackEsprit\\SmartConseil-Back\\microservices'
+                echo "=== WORKSPACE DEBUGGING ==="
+                bat 'echo Current directory: %CD%'
+                bat 'dir /s /b *.xml | findstr pom'
+                bat 'dir /s BackEsprit'
+                
+                script {
+                    if (fileExists('BackEsprit/SmartConseil-Back/microservices/microservicePlanification/pom.xml')) {
+                        echo "✅ POM file exists in workspace"
+                        bat 'type BackEsprit\\SmartConseil-Back\\microservices\\microservicePlanification\\pom.xml | findstr /C:"<artifactId>"'
+                    } else {
+                        echo "❌ POM file NOT found in workspace"
+                        bat 'echo Listing all XML files:'
+                        bat 'dir /s *.xml'
+                    }
+                }
             }
         }
         
         stage('Build Backend Services') {
-            parallel {
-                stage('Build Conseil Service') {
-                    steps {
-                        script {
-                            def servicePath = 'BackEsprit\\SmartConseil-Back\\microservices\\microserviceConseil'
-                            bat "dir ${servicePath}"
-                            bat "if exist ${servicePath}\\pom.xml (echo POM found) else (echo POM NOT found && exit 1)"
-                            
-                            dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
+            steps {
+                script {
+                    def services = [
+                        'microserviceConseil': 'conseil-service',
+                        'microservicePlanification': 'planification-service', 
+                        'microserviceRapport': 'rapport-service',
+                        'microserviceRectification': 'rectification-service',
+                        'microserviceUser': 'user-service'
+                    ]
+                    
+                    services.each { serviceName, imageName ->
+                        echo "Building ${serviceName}..."
+                        def servicePath = "BackEsprit/SmartConseil-Back/microservices/${serviceName}"
+                        
+                        if (fileExists("${servicePath}/pom.xml")) {
+                            dir(servicePath) {
+                                echo "✅ Found pom.xml, building ${serviceName}"
                                 bat 'dir'
-                                bat 'mvn clean package -DskipTests'
-                                bat "docker build -t conseil-service:${IMAGE_TAG} ."
+                                bat 'mvn clean package -DskipTests -q'
+                                bat "docker build -t ${imageName}:${IMAGE_TAG} ."
                             }
-                        }
-                    }
-                }
-                
-                stage('Build Planification Service') {
-                    steps {
-                        script {
-                            def servicePath = 'BackEsprit\\SmartConseil-Back\\microservices\\microservicePlanification'
-                            bat "dir ${servicePath}"
-                            bat "if exist ${servicePath}\\pom.xml (echo POM found) else (echo POM NOT found && exit 1)"
-                            
-                            dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
-                                bat 'dir'
-                                bat 'mvn clean package -DskipTests'
-                                bat "docker build -t planification-service:${IMAGE_TAG} ."
-                            }
-                        }
-                    }
-                }
-                
-                stage('Build Rapport Service') {
-                    steps {
-                        script {
-                            def servicePath = 'BackEsprit\\SmartConseil-Back\\microservices\\microserviceRapport'
-                            bat "dir ${servicePath}"
-                            bat "if exist ${servicePath}\\pom.xml (echo POM found) else (echo POM NOT found && exit 1)"
-                            
-                            dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
-                                bat 'dir'
-                                bat 'mvn clean package -DskipTests'
-                                bat "docker build -t rapport-service:${IMAGE_TAG} ."
-                            }
-                        }
-                    }
-                }
-                
-                stage('Build Rectification Service') {
-                    steps {
-                        script {
-                            def servicePath = 'BackEsprit\\SmartConseil-Back\\microservices\\microserviceRectification'
-                            bat "dir ${servicePath}"
-                            bat "if exist ${servicePath}\\pom.xml (echo POM found) else (echo POM NOT found && exit 1)"
-                            
-                            dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
-                                bat 'dir'
-                                bat 'mvn clean package -DskipTests'
-                                bat "docker build -t rectification-service:${IMAGE_TAG} ."
-                            }
-                        }
-                    }
-                }
-                
-                stage('Build User Service') {
-                    steps {
-                        script {
-                            def servicePath = 'BackEsprit\\SmartConseil-Back\\microservices\\microserviceUser'
-                            bat "dir ${servicePath}"
-                            bat "if exist ${servicePath}\\pom.xml (echo POM found) else (echo POM NOT found && exit 1)"
-                            
-                            dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
-                                bat 'dir'
-                                bat 'mvn clean package -DskipTests'
-                                bat "docker build -t user-service:${IMAGE_TAG} ."
-                            }
+                        } else {
+                            error "❌ pom.xml not found for ${serviceName} at ${servicePath}"
                         }
                     }
                 }
