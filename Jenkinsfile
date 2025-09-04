@@ -1,0 +1,268 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_REGISTRY = 'https://hub.docker.com/repositories/fathimaddeh47899' // Replace with your Docker registry URL
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        MYSQL_ROOT_PASSWORD = ''
+        MYSQL_DATABASE = 'conseil'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Backend Services') {
+            parallel {
+                stage('Build Conseil Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
+                            sh 'mvn clean package -DskipTests'
+                            sh "docker build -t conseil-service:${IMAGE_TAG} ."
+                        }
+                    }
+                }
+                
+                stage('Build Planification Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
+                            sh 'mvn clean package -DskipTests'
+                            sh "docker build -t planification-service:${IMAGE_TAG} ."
+                        }
+                    }
+                }
+                
+                stage('Build Rapport Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
+                            sh 'mvn clean package -DskipTests'
+                            sh "docker build -t rapport-service:${IMAGE_TAG} ."
+                        }
+                    }
+                }
+                
+                stage('Build Rectification Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
+                            sh 'mvn clean package -DskipTests'
+                            sh "docker build -t rectification-service:${IMAGE_TAG} ."
+                        }
+                    }
+                }
+                
+                stage('Build User Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
+                            sh 'mvn clean package -DskipTests'
+                            sh "docker build -t user-service:${IMAGE_TAG} ."
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Build Frontend') {
+            steps {
+                dir('FrontEsprit/SmartConseil-Front') {
+                    sh "docker build -t frontend-app:${IMAGE_TAG} ."
+                }
+            }
+        }
+        
+        stage('Run Tests') {
+            parallel {
+                stage('Backend Tests') {
+                    steps {
+                        script {
+                            def services = [
+                                'microserviceConseil',
+                                'microservicePlanification', 
+                                'microserviceRapport',
+                                'microserviceRectification',
+                                'microserviceUser'
+                            ]
+                            
+                            services.each { service ->
+                                dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
+                                    sh 'mvn test'
+                                }
+                            }
+                        }
+                    }
+                    post {
+                        always {
+                            publishTestResults testResultsPattern: '**/target/surefire-reports/*.xml'
+                        }
+                    }
+                }
+                
+                stage('Frontend Tests') {
+                    steps {
+                        dir('FrontEsprit/SmartConseil-Front') {
+                            sh 'npm ci'
+                            sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                        }
+                    }
+                    post {
+                        always {
+                            publishTestResults testResultsPattern: '**/test-results.xml'
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Security Scan') {
+            steps {
+                script {
+                    // OWASP Dependency Check for backend services
+                    def services = [
+                        'microserviceConseil',
+                        'microservicePlanification', 
+                        'microserviceRapport',
+                        'microserviceRectification',
+                        'microserviceUser'
+                    ]
+                    
+                    services.each { service ->
+                        dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
+                            sh 'mvn org.owasp:dependency-check-maven:check'
+                        }
+                    }
+                    
+                    // NPM Audit for frontend
+                    dir('FrontEsprit/SmartConseil-Front') {
+                        sh 'npm audit --audit-level moderate'
+                    }
+                }
+            }
+        }
+        
+        stage('Integration Tests') {
+            steps {
+                script {
+                    // Start services for integration testing
+                    sh 'docker-compose -f docker-compose.yml up -d mysql'
+                    sh 'sleep 30' // Wait for MySQL to be ready
+                    
+                    // Run integration tests
+                    sh 'docker-compose -f docker-compose.yml up -d'
+                    sh 'sleep 60' // Wait for all services to be ready
+                    
+                    // Add your integration test commands here
+                    // Example: API health checks
+                    sh '''
+                        curl -f http://localhost:8081/actuator/health || exit 1
+                        curl -f http://localhost:8082/actuator/health || exit 1
+                        curl -f http://localhost:8083/actuator/health || exit 1
+                        curl -f http://localhost:8084/actuator/health || exit 1
+                        curl -f http://localhost:8085/actuator/health || exit 1
+                        curl -f http://localhost:4200 || exit 1
+                    '''
+                }
+            }
+            post {
+                always {
+                    sh 'docker-compose -f docker-compose.yml down -v'
+                }
+            }
+        }
+        
+        stage('Push Images') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'develop'
+                }
+            }
+            steps {
+                script {
+                    // Tag and push images to registry
+                    def images = [
+                        'conseil-service',
+                        'planification-service',
+                        'rapport-service',
+                        'rectification-service',
+                        'user-service',
+                        'frontend-app'
+                    ]
+                    
+                    images.each { image ->
+                        sh "docker tag ${image}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${image}:${IMAGE_TAG}"
+                        sh "docker tag ${image}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${image}:latest"
+                        sh "docker push ${DOCKER_REGISTRY}/${image}:${IMAGE_TAG}"
+                        sh "docker push ${DOCKER_REGISTRY}/${image}:latest"
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy to Staging') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                script {
+                    // Deploy to staging environment
+                    sh '''
+                        # Update docker-compose with new image tags
+                        sed -i "s/:latest/:${IMAGE_TAG}/g" docker-compose.yml
+                        
+                        # Deploy to staging
+                        docker-compose -f docker-compose.yml up -d
+                    '''
+                }
+            }
+        }
+        
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    // Add manual approval for production deployment
+                    input message: 'Deploy to Production?', ok: 'Deploy'
+                    
+                    // Deploy to production environment
+                    sh '''
+                        # Update docker-compose with new image tags
+                        sed -i "s/:latest/:${IMAGE_TAG}/g" docker-compose.yml
+                        
+                        # Deploy to production
+                        docker-compose -f docker-compose.yml up -d
+                    '''
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Clean up Docker images to save space
+            sh 'docker system prune -f'
+            
+            // Archive artifacts
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/dist/**', allowEmptyArchive: true
+        }
+        
+        success {
+            echo 'Pipeline succeeded!'
+            // Add notification logic here (Slack, email, etc.)
+        }
+        
+        failure {
+            echo 'Pipeline failed!'
+            // Add notification logic here (Slack, email, etc.)
+        }
+        
+        unstable {
+            echo 'Pipeline is unstable!'
+            // Add notification logic here
+        }
+    }
+}
