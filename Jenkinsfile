@@ -61,7 +61,7 @@ pipeline {
                     steps {
                         script {
                             def services = [
-                                'microserviceConseil',
+                              
                                 'microservicePlanification', 
                                 'microserviceRapport',
                                 'microserviceRectification',
