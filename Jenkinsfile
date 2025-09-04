@@ -17,14 +17,7 @@ pipeline {
         
         stage('Build Backend Services') {
             parallel {
-                stage('Build Conseil Service') {
-                    steps {
-                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
-                            bat 'mvn clean package -DskipTests'
-                            bat "docker build -t conseil-service:${IMAGE_TAG} ."
-                        }
-                    }
-                }
+            
                 
                 stage('Build Planification Service') {
                     steps {
