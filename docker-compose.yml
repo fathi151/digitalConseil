@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: mysql-db
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - smartconseil-net
+
+  conseil-service:
+    build:
+      context: ./BackEsprit/SmartConseil-Back/microservices/microserviceConseil
+    container_name: conseil-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    networks:
+      - smartconseil-net
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  planification-service:
+    build:
+      context: ./BackEsprit/SmartConseil-Back/microservices/microservicePlanification
+    container_name: planification-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - mysql
+    networks:
+      - smartconseil-net
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  rapport-service:
+    build:
+      context: ./BackEsprit/SmartConseil-Back/microservices/microserviceRapport
+    container_name: rapport-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      - mysql
+    networks:
+      - smartconseil-net
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  rectification-service:
+    build:
+      context: ./BackEsprit/SmartConseil-Back/microservices/microserviceRectification
+    container_name: rectification-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      - mysql
+    networks:
+      - smartconseil-net
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  user-service:
+    build:
+      context: ./BackEsprit/SmartConseil-Back/microservices/microserviceUser
+    container_name: user-service
+    ports:
+      - "8085:8080"
+    depends_on:
+      - mysql
+    networks:
+      - smartconseil-net
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  frontend:
+    build:
+      context: ./FrontEsprit/SmartConseil-Front
+    container_name: frontend-app
+    ports:
+      - "4200:4200"
+    depends_on:
+      - planification-service
+      - rapport-service
+      - rectification-service
+      - user-service
+    networks:
+      - smartconseil-net
+
+volumes:
+  mysql-data:
+
+networks:
+  smartconseil-net:
+    driver: bridge
