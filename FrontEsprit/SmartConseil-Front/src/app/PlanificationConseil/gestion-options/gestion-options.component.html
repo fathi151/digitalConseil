@@ -1,0 +1,131 @@
+<app-layout>
+  <div class="gestion-options-content">
+    <div class="header-container">
+      <div class="header-text">
+        <h2>Gestion des Options et Classes</h2>
+        <p>Module de configuration - Gestion des options et classes</p>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <!-- Section Options -->
+      <div class="section-card">
+        <div class="section-header">
+          <h3>📚 Options Disponibles</h3>
+          <button class="btn-primary" (click)="toggleOptionForm()">
+            <span>➕</span> Ajouter une Option
+          </button>
+        </div>
+
+        <!-- Formulaire d'ajout d'option -->
+        <div class="form-container" *ngIf="showOptionForm">
+          <form [formGroup]="optionForm" (ngSubmit)="onSubmitOption()">
+            <h4>Nouvelle Option</h4>
+            <div class="form-row">
+              <div class="form-field">
+                <label>Nom de l'option *</label>
+                <input type="text" formControlName="nom" placeholder="Ex: Data Science, SAE...">
+                <div *ngIf="optionForm.get('nom')?.touched && optionForm.get('nom')?.invalid" class="error">
+                  Le nom est obligatoire (minimum 2 caractères)
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Description</label>
+                <textarea formControlName="description" placeholder="Description de l'option..."></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-success" [disabled]="optionForm.invalid">
+                ✅ Ajouter l'Option
+              </button>
+              <button type="button" class="btn-secondary" (click)="cancelOptionForm()">
+                ❌ Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Liste des options -->
+        <div class="options-grid">
+          <div *ngFor="let option of options" 
+               class="option-card" 
+               [class.selected]="selectedOption?.id === option.id"
+               (click)="onOptionSelect(option)">
+            <div class="option-header">
+              <h4>{{ option.nom }}</h4>
+              <span class="option-id">#{{ option.id }}</span>
+            </div>
+            <p class="option-description">{{ option.description || 'Aucune description' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Classes -->
+      <div class="section-card" *ngIf="selectedOption">
+        <div class="section-header">
+          <h3>🎓 Classes pour "{{ selectedOption.nom }}"</h3>
+          <button class="btn-primary" (click)="toggleClasseForm()">
+            <span>➕</span> Ajouter une Classe
+          </button>
+        </div>
+
+        <!-- Formulaire d'ajout de classe -->
+        <div class="form-container" *ngIf="showClasseForm">
+          <form [formGroup]="classeForm" (ngSubmit)="onSubmitClasse()">
+            <h4>Nouvelle Classe pour "{{ selectedOption.nom }}"</h4>
+            <div class="form-row">
+              <div class="form-field">
+                <label>Nom de la classe *</label>
+                <input type="text" formControlName="nom" placeholder="Ex: 4DS1, 5SAE2...">
+                <div *ngIf="classeForm.get('nom')?.touched && classeForm.get('nom')?.invalid" class="error">
+                  Le nom est obligatoire (minimum 2 caractères)
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Description</label>
+                <textarea formControlName="description" placeholder="Description de la classe..."></textarea>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-success" [disabled]="classeForm.invalid">
+                ✅ Ajouter la Classe
+              </button>
+              <button type="button" class="btn-secondary" (click)="cancelClasseForm()">
+                ❌ Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Liste des classes -->
+        <div class="classes-grid">
+          <div *ngFor="let classe of classes" class="classe-card">
+            <div class="classe-header">
+              <h5>{{ classe.nom }}</h5>
+              <span class="classe-id">#{{ classe.id }}</span>
+            </div>
+            <p class="classe-description">{{ classe.description || 'Aucune description' }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="classes.length === 0" class="empty-state">
+          <p>Aucune classe trouvée pour cette option.</p>
+          <p>Cliquez sur "Ajouter une Classe" pour commencer.</p>
+        </div>
+      </div>
+
+      <!-- Message d'aide -->
+      <div class="help-section" *ngIf="!selectedOption">
+        <div class="help-card">
+          <h4>💡 Comment utiliser cette page ?</h4>
+          <ol>
+            <li>Ajoutez d'abord une <strong>Option</strong> (ex: Data Science, SAE)</li>
+            <li>Cliquez sur une option pour la sélectionner</li>
+            <li>Ajoutez ensuite les <strong>Classes</strong> qui appartiennent à cette option</li>
+            <li>Les options et classes seront disponibles lors de la création des conseils</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

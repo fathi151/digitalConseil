@@ -1,0 +1,84 @@
+<div class="session-container">
+  <!-- Header de la session -->
+  <div class="session-header">
+    <div class="session-info">
+      <h1 class="session-title">
+        <i class="ti ti-video"></i>
+        Session de Conseil
+      </h1>
+      <div class="session-details" *ngIf="conseil">
+        <span class="conseil-classe">{{ conseil.classes }}</span>
+        <span class="conseil-date">{{ conseil.date | date: 'dd/MM/yyyy à HH:mm' }}</span>
+      </div>
+    </div>
+    
+    <div class="session-actions">
+      <div class="connection-status" [class.connected]="isConnected">
+        <i class="ti ti-circle-filled"></i>
+        <span>{{ isConnected ? 'Connecté' : 'Déconnecté' }}</span>
+      </div>
+      
+      <button class="quit-btn" (click)="quitterSession()">
+        <i class="ti ti-logout"></i>
+        Quitter
+      </button>
+    </div>
+  </div>
+
+  <!-- Zone principale de la session -->
+  <div class="session-content">
+    <!-- Panneau des participants -->
+    <div class="participants-panel">
+      <div class="panel-header">
+        <h3>
+          <i class="ti ti-users"></i>
+          Participants ({{ participants.length }})
+        </h3>
+      </div>
+      
+      <div class="participants-list">
+        <div *ngFor="let participant of participants; let i = index" 
+             class="participant-card"
+             [class.current-user]="participant === currentUser">
+          
+          <div class="participant-avatar">
+            <i class="ti ti-user"></i>
+          </div>
+          
+          <div class="participant-info">
+            <div class="participant-name">
+              {{ participant }}
+              <span *ngIf="participant === currentUser" class="you-badge">(Vous)</span>
+            </div>
+            <div class="participant-status">
+              <div class="status-dot online"></div>
+              <span>En ligne</span>
+            </div>
+          </div>
+          
+          <div class="participant-actions">
+            <button class="action-btn" title="Plus d'options">
+              <i class="ti ti-dots-vertical"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Message si aucun participant -->
+        <div *ngIf="participants.length === 0" class="no-participants">
+          <i class="ti ti-users-off"></i>
+          <p>Aucun participant connecté</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone de contenu principal (pour futurs développements) -->
+    <div class="main-content">
+      <div class="content-placeholder">
+        <i class="ti ti-presentation"></i>
+        <h3>Session en cours</h3>
+        <p>La session de conseil est maintenant active.</p>
+        <p>Les fonctionnalités de collaboration seront ajoutées ici.</p>
+      </div>
+    </div>
+  </div>
+</div>

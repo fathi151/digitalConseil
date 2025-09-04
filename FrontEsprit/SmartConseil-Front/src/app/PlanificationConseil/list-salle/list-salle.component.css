@@ -1,0 +1,304 @@
+.welcome-header {
+  background: linear-gradient(to right, #2563eb, #1e40af); /* bleu dégradé */
+  color: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.welcome-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  color: white;
+}
+
+.welcome-header p {
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.9;
+}
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  padding: 20px 30px;
+  text-align: center;
+  flex: 1 1 200px;
+  max-width: 250px;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #000000; /* gris foncé */
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #111827; /* noir bleuté */
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9fafb; /* fond très clair */
+  padding: 20px 30px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.header-text h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #111827; /* noir bleuté */
+  font-weight: 700;
+}
+
+.header-text p {
+  margin: 5px 0 0 0;
+  color: #6b7280; /* gris foncé */
+  font-size: 14px;
+}
+
+.add-user-btn {
+  background-color: #111827; /* bouton noir bleuté */
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.add-user-btn:hover {
+  background-color: #1f2937;
+}
+
+.add-user-btn .icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+/* Modal background */
+.modal {
+  display: none; /* caché par défaut */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4); /* fond semi-transparent */
+}
+
+/* Modal box */
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Close button */
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Form styles */
+.modal-content input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.modal-content button[type="submit"] {
+  background-color: #111827;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-content button[type="submit"]:hover {
+  background-color: #1f2937;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
+
+  /* ↓↓↓ ajoute cette ligne ↓↓↓ */
+  margin-top: -30px; /* ajuste à ta convenance */
+}
+select {
+  width: 100%;
+  max-width: 400px; /* adapte selon besoin */
+  padding: 10px 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #333;
+  appearance: none; /* enlève style par défaut navigateur */
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* Ajouter une petite flèche personnalisée */
+select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='14' height='8' viewBox='0 0 14 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23333' d='M7 8L0 0h14L7 8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 14px 8px;
+  margin-bottom: 20px; /* espace sous chaque select */
+}
+
+/* Au focus, changer la bordure */
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
+
+/* Survol */
+select:hover {
+  border-color: #888;
+}
+.room-card h5,
+    .room-card p {
+      margin-left: 0 !important;
+    }
+
+/* Content Centering and Layout Fixes */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.salle-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+/* Ensure proper alignment */
+.container-fluid {
+  text-align: left;
+  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+}
+
+/* Fix any right alignment issues */
+* {
+  box-sizing: border-box;
+}
+
+/* Remove any unwanted margins or padding that could cause right alignment */
+.body-wrapper,
+.body-wrapper-inner {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Ensure all main containers are properly centered */
+.welcome-header,
+.header-container,
+.stats-container {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* Additional responsive fixes */
+@media (max-width: 768px) {
+  .salle-content {
+    padding: 0 0.5rem;
+  }
+
+  .welcome-header,
+  .header-container {
+    margin: 0 auto 2rem auto;
+  }
+}

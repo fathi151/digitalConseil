@@ -1,0 +1,83 @@
+<app-layout>
+
+<!-- Bouton pour ouvrir la modale -->
+<div class="header-container">
+          <!-- Bouton pour ouvrir la modale -->
+          <div class="header-container">
+            <div class="header-text">
+              <h2>Gestion des Salles</h2>
+              <p>Module 3 - Gestion des Disponibilite de Salles</p>
+            </div>
+           
+          </div>
+
+<button class="add-user-btn" routerLink="/ajoutSalle">
+  <span class="icon">👤</span> Nouveau Salle
+</button>
+</div>
+
+
+<!-- MODAL -->
+
+
+
+
+
+          <!--  Row 1 -->
+ 
+
+    <!-- Salle A101 -->
+   <div class="container my-5">
+  <div class="card p-4 shadow-sm">
+    <h3 class="fw-bold mb-1 text-dark">Liste des Salles</h3>
+    <p class="text-muted mb-4">Gérer et réserver les salles disponibles</p>
+
+    <!-- Loop over salles -->
+    <div *ngFor="let salle of Salles" class="room-card card p-3 mb-3">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5 class="fw-bold text-primary">
+            <i class="fa-solid fa-location-dot me-2"></i>{{ salle.nomSalle }}
+          </h5>
+          <p class="text-dark mb-1">{{ salle.etage }}{{ salle.etage === 0 ? ' RDC' : (salle.etage + ' étage') }}</p>
+          <p class="mb-1 text-dark">
+            <i class="fa-solid fa-user-group me-2"></i>
+            Capacité: {{ salle.capacite }} personnes
+          </p>
+        </div>
+<span
+  class="badge rounded-pill align-self-start px-3 py-2"
+  [ngClass]="{
+    'bg-danger': (salle.conseils && salle.conseils.length > 0),
+    'bg-success': (!salle.conseils || salle.conseils.length === 0)
+  }"
+>
+  {{ (salle.conseils && salle.conseils.length > 0) ? 'Réservée' : 'Disponible' }}
+</span>
+
+
+      </div>
+
+      <!-- Equipment centered -->
+      <div class="d-flex justify-content-center align-items-center mb-3 text-dark">
+        <i class="fa-solid fa-gear me-2 text-muted"></i>
+        <span>Équipements: {{ salle.equipement }}</span>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary btn-sm" >Réserver</button>
+        <button class="btn btn-outline-secondary btn-sm">Voir planning</button>
+        <button class="btn btn-outline-dark btn-sm">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Salle A102 -->
+  
+
+    <!-- Salle B205 -->
+
+
+</app-layout>

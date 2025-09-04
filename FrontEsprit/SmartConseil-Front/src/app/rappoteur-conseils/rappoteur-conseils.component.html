@@ -1,0 +1,840 @@
+<app-layout>
+  <div class="enseignant-content">
+<!-- Bouton pour ouvrir la modale -->
+
+<div class="header-container">
+  <div class="header-text">
+    <h2>Gestion des Conseils</h2>
+    <p>Module 1 - Gestion des Planification et Conseil</p>
+  </div>
+
+</div>
+
+
+<style>
+
+   .body {
+      font-family: 'Arial', sans-serif;
+      background: #f5f5f5;
+      padding: 30px;
+    }
+
+    .card {
+      background: #fff;
+      width: 1100px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 25px; /* espace entre les cartes */
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .header span {
+      margin-left: 10px;
+    }
+
+    .status {
+      margin-left: auto;
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .info-line {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .info-block {
+      flex: 1;
+      text-align: center;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .info-block:first-child {
+      text-align: left;
+    }
+
+.info-block:last-child {
+  text-align: left; /* align text to left instead of right */
+  margin-left: -30px; /* move it slightly to the left */
+}
+/* Move "Salle A101" slightly left */
+.info-line:nth-of-type(1) .info-block:nth-child(2) {
+  margin-left: -20px;
+}
+
+/* Move "12 participants" slightly left */
+.info-line:nth-of-type(1) .info-block:nth-child(3) {
+  margin-left: -300px;
+}
+
+/* Move "Rapporteur" slightly left */
+.info-line:nth-of-type(2) .info-block:nth-child(2) {
+  margin-left: -400px;
+}
+
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modifier-btn,
+    .confirm-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background-color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .confirm-btn {
+      background-color: #0f172a;
+      color: white;
+      border: none;
+    }
+
+    .accepter-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #000000;
+      background-color: #000000;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .accepter-btn:hover {
+      background-color: #333333;
+      border-color: #333333;
+    }
+
+    .rejeter-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #6b7280;
+      background-color: white;
+      color: #374151;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .rejeter-btn:hover {
+      background-color: #f9fafb;
+      border-color: #4b5563;
+    }
+
+    /* Styles pour les boutons actifs */
+    .accepter-btn.active {
+      background-color: #000000;
+      box-shadow: 0 0 0 2px #4b5563;
+      transform: scale(1.02);
+    }
+
+    .rejeter-btn.active {
+      background-color: #f3f4f6;
+      border-color: #374151;
+      color: #111827;
+      box-shadow: 0 0 0 2px #9ca3af;
+      transform: scale(1.02);
+    }
+
+    .accepter-btn.active:hover {
+      background-color: #111827;
+    }
+
+    .rejeter-btn.active:hover {
+      background-color: #e5e7eb;
+    }
+
+    /* Styles pour les icônes de statut d'acceptation */
+    .acceptance-status {
+      display: flex;
+      align-items: center;
+    }
+
+    .acceptance-icon {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .acceptance-icon.accepted {
+      color: #10b981;
+    }
+
+    .acceptance-icon.rejected {
+      color: #ef4444;
+    }
+
+    .acceptance-icon.pending {
+      color: #f59e0b;
+    }
+
+    /* Styles pour les messages de réponse */
+    .response-message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .accepted-message {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .rejected-message {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+
+    .accepted-message i,
+    .rejected-message i {
+      font-size: 16px;
+    }
+
+    /* Styles pour la section de statut d'acceptation plus visible */
+    .acceptance-status-section {
+      margin: 15px 0;
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #e5e7eb;
+    }
+
+    .acceptance-status-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .acceptance-status-display {
+      display: flex;
+      align-items: center;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .status-item.accepted {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .status-item.rejected {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+
+    .status-item.pending {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #f59e0b;
+    }
+
+    /* Styles pour les états de séance - tous en gris */
+    .status-item.pas-debute {
+      background-color: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+    }
+
+    .status-item.en-cours {
+      background-color: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+    }
+
+    .status-item.termine {
+      background-color: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+    }
+
+    /* Style pour le bouton Rejoindre */
+    .rejoindre-btn {
+      margin-left: auto;
+      padding: 8px 16px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .rejoindre-btn:hover {
+      background-color: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Modifier l'affichage pour placer le bouton à droite */
+    .acceptance-status-display {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .status-item .acceptance-icon {
+      font-size: 18px;
+    }
+
+    /* Styles pour la section de justification */
+    .justification-section {
+      margin-top: 15px;
+      padding: 20px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .justification-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: #1e40af;
+      font-size: 15px;
+    }
+
+    .justification-header i {
+      font-size: 16px;
+    }
+
+    .justification-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    .justification-input:focus {
+      outline: none;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+    }
+
+    .justification-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .justification-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .submit-justification-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid #000000;
+      background-color: #000000;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .submit-justification-btn:hover {
+      background-color: #333333;
+      border-color: #333333;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .cancel-justification-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background-color: white;
+      color: #6b7280;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .cancel-justification-btn:hover {
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+      color: #374151;
+    }
+
+    .big-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  margin-top: 40px;
+  width: 100%;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+  /* Move "12 participants" slightly left */
+.info-line:nth-of-type(1) .info-block:nth-child(3) {
+  margin-left: 30px;
+}
+
+/* Styles pour le statut de la séance */
+.seance-status-section {
+  margin: 15px 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #e5e7eb;
+}
+
+.seance-status-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.seance-status-display {
+  display: flex;
+  align-items: center;
+}
+
+.seance-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Styles pour les boutons de contrôle */
+.seance-controls {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.control-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.start-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.start-btn:hover {
+  background-color: #2563eb;
+}
+
+.end-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.end-btn:hover {
+  background-color: #2563eb;
+}
+
+.resume-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.resume-btn:hover {
+  background-color: #2563eb;
+}
+
+/* Styles pour la barre des participants */
+.participants-bar {
+  margin-top: 15px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.participants-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.participants-header i {
+  color: #10b981;
+  font-size: 16px;
+}
+
+.participants-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.participant-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.participant-avatar {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+}
+
+.participant-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.participant-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 4px;
+}
+
+.participant-status.online {
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+  </style>
+          <!--  Row 1 -->
+          <div class="row">
+<div class="container">
+    <!-- Calendrier de la semaine -->
+  <div class="calendar">
+  <h2>
+    <img src="assets/images/logos/calendar.JPG" alt="Calendrier"
+      style="width: 40px; height: 40px; vertical-align: middle; margin-right: 8px;">
+    Calendrier de la semaine
+  </h2>
+
+  <p class="week">
+    Semaine du {{ joursSemaine[0]?.date | date: 'dd MMMM yyyy' }} -
+    {{ joursSemaine[6]?.date | date: 'dd MMMM yyyy' }}
+  </p>
+
+  <div class="days">
+    <div *ngFor="let jour of joursSemaine"
+         (click)="onSelectDate(jour.date)"
+         [class.active]="selectedDate?.toDateString() === jour.date.toDateString()">
+      {{ jour.label }}<br><span>{{ jour.date | date: 'dd' }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="conseilsFiltres.length === 0">
+    <p>Aucun conseil pour ce jour.</p>
+  </div>
+
+<div *ngFor="let conseil of conseilsFiltres"
+     class="event"
+     [ngClass]="{'confirmed': conseil?.salle, 'pending': !conseil?.salle}">
+  <strong>Classe : {{ conseil.classes }}</strong>
+
+  <!-- Date et salle sous la classe, en petit et côte à côte -->
+<div style="font-size: 0.85rem; color: #555; display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+  <span *ngIf="conseil.heure">Heure {{ conseil.heure }}</span>
+
+  <!-- Trait vertical uniquement si les deux sont présents -->
+  <span *ngIf="conseil.heure && conseil.salle" style="border-left: 1px solid #555; height: 12px;"></span>
+
+  <span *ngIf="conseil.salle">Salle {{ conseil.salle.nomSalle }}</span>
+</div>
+
+
+  <span class="status" [ngClass]="{'confirmed': conseil?.salle, 'pending': !conseil?.salle}">
+    {{ conseil?.salle ? 'Confirmé' : 'En attente' }}
+  </span>
+</div>
+
+
+</div>
+
+
+    <!-- Actions Rapides -->
+    <div class="actions">
+      <h2>Actions Rapides</h2>
+      <p class="subtitle">Outils de planification</p>
+     <button (click)="openCalendarModal()">
+  <img src="assets/images/logos/calendar.JPG"  style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
+  Voir calendrier complet
+</button>
+   
+      
+    </div>
+  </div>  
+  
+  <div class="big-card">
+  <!-- tout ton contenu ici (calendrier, actions, h2, *ngFor, etc.) -->
+
+
+
+             <h2>Conseils Planifiés</h2>
+  <div class="subtext">Liste détaillée des conseils de classe</div>
+
+
+ 
+  <!-- Deuxième carte -->
+<div *ngFor="let conseil of conseilsFiler" class="card">
+ <div class="header">
+  <img src="assets/images/logos/calendar.JPG" alt="Calendrier" style="width: 28px; height: 28px; vertical-align: middle; margin-right: 5px;">
+    <div style="display: flex; flex-direction: column;">
+      <span>{{ conseil.classes }}</span>
+      <span style="font-size: 12px; color: #666;">Date:  {{ conseil.date }}</span>
+    </div>
+
+<span
+  class="status"
+  [ngClass]="conseil.etat ? 'confirmed' : 'unconfirmed'"
+  style="margin-left: auto;">
+  {{ conseil.etat ? ' Confirmé' : ' Non Confirmé' }}
+</span>
+
+</div>
+
+  <!-- Ligne Durée - Salle - Participants -->
+  <div class="info-line">
+    <div class="info-block">🕒 Durée: {{ conseil.duree }}</div>
+    <div class="info-block">
+  <img src="assets/images/logos/position.JPG" alt="Salle" style="width: 23px; height: 29px; vertical-align: middle; margin-right: 6px;">
+  Salle {{ conseil.salle?.nomSalle }}
+</div>
+
+<div class="info-block">
+  <img src="assets/images/logos/mennn.JPG" alt="Participants" style="width: 23px; height: 29px; vertical-align: middle; margin-right: 6px;">
+  Invitation
+</div>
+
+  </div>
+
+  <!-- Ligne Président - Rapporteur -->
+<div class="info-line">
+  <div class="info-block"><strong>Président:</strong> Prof.{{ getNomUtilisateur(conseil.presidentId) }} </div>
+  <div class="info-block"><strong>Rapporteur:</strong> Dr.{{ getNomUtilisateur(conseil.raporteurId) }}</div>
+</div>
+
+
+
+
+  <div class="buttons">
+    <button class="accepter-btn"
+            [ngClass]="{'active': getAcceptanceStatus(conseil.id) === 'accepted'}"
+            (click)="accepterConseil(conseil.id)">
+      <i class="ti ti-check"></i> Accepter
+    </button>
+    <button class="rejeter-btn"
+            [ngClass]="{'active': getAcceptanceStatus(conseil.id) === 'rejected'}"
+            (click)="rejeterConseil(conseil.id)">
+      <i class="ti ti-x"></i> Rejeter
+    </button>
+    <button class="confirm-btn" (click)="exportExcelForConseil(conseil.id)">
+      <i class="ti ti-download"></i> Exporter Excel
+    </button>
+  </div>
+
+  <!-- Input de justification pour le rejet -->
+  <div class="justification-section" *ngIf="showJustificationInput[conseil.id]">
+    <div class="justification-header">
+      <i class="ti ti-message-circle"></i>
+      <span>Justification du rejet :</span>
+    </div>
+    <textarea
+      class="justification-input"
+      [(ngModel)]="justificationText[conseil.id]"
+      placeholder="Veuillez saisir la raison de votre rejet..."
+      rows="3">
+    </textarea>
+    <div class="justification-buttons">
+      <button class="submit-justification-btn" (click)="submitRejectionWithJustification(conseil.id)">
+        <i class="ti ti-send"></i> Confirmer le rejet
+      </button>
+      <button class="cancel-justification-btn" (click)="cancelJustification(conseil.id)">
+        <i class="ti ti-x"></i> Annuler
+      </button>
+    </div>
+  </div>
+
+</div>
+<!-- End of conseil card -->
+
+</div>
+<!-- End of big-card -->
+
+          <div class="py-6 px-6 text-center">
+            <p class="mb-0 fs-4">Design and Developed by <a href="#"
+                class="pe-1 text-primary text-decoration-underline">Wrappixel.com</a> Distributed by <a href="https://themewagon.com" target="_blank" >ThemeWagon</a></p>
+          </div>
+        </div>
+        <!-- End of container -->
+      </div>
+      <!-- End of row -->
+
+  <!-- Calendar Modal -->
+  <div class="calendar-modal" [ngClass]="{'show': showCalendarModal}" (click)="closeCalendarModal()">
+    <div class="calendar-modal-content" (click)="$event.stopPropagation()">
+      <div class="calendar-header">
+        <h3>Calendrier Complet des Conseils</h3>
+        <button class="close-btn" (click)="closeCalendarModal()">&times;</button>
+      </div>
+
+      <div class="calendar-navigation">
+        <button class="nav-btn" (click)="previousMonth()">‹</button>
+        <h4>{{ calendarMonths[currentCalendarDate.getMonth()] }} {{ currentCalendarDate.getFullYear() }}</h4>
+        <button class="nav-btn" (click)="nextMonth()">›</button>
+        <button class="today-btn" (click)="goToToday()">Aujourd'hui</button>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="calendar-weekdays">
+          <div class="weekday">Lun</div>
+          <div class="weekday">Mar</div>
+          <div class="weekday">Mer</div>
+          <div class="weekday">Jeu</div>
+          <div class="weekday">Ven</div>
+          <div class="weekday">Sam</div>
+          <div class="weekday">Dim</div>
+        </div>
+
+        <div class="calendar-days">
+          <div *ngFor="let dayInfo of calendarDays"
+               class="calendar-day"
+               [ngClass]="{
+                 'other-month': !dayInfo.isCurrentMonth,
+                 'today': dayInfo.isToday,
+                 'has-conseil': dayInfo.conseils.length > 0,
+                 'selected': selectedDate && dayInfo.date.toDateString() === selectedDate.toDateString()
+               }"
+               (click)="selectCalendarDate(dayInfo)">
+            <span class="day-number">{{ dayInfo.day }}</span>
+            <div class="conseil-indicators" *ngIf="dayInfo.conseils.length > 0">
+              <div *ngFor="let conseil of dayInfo.conseils"
+                   class="conseil-indicator"
+                   [title]="conseil.classes + ' - ' + (conseil.heure || 'Heure non définie')">
+                {{ conseil.classes }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <div class="legend-color today-color"></div>
+          <span>Aujourd'hui</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color conseil-color"></div>
+          <span>Jour avec conseil</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color selected-color"></div>
+          <span>Jour sélectionné</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</app-layout>

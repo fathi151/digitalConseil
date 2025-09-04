@@ -1,0 +1,403 @@
+<app-layout>
+
+
+
+      <!-- Success/Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="ti ti-check-circle me-2"></i>
+        {{ successMessage }}
+        <button type="button" class="btn-close" (click)="clearMessages()"></button>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="ti ti-alert-circle me-2"></i>
+        {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="clearMessages()"></button>
+      </div>
+
+      <!-- Statistics Section -->
+      <div id="statistics-section" class="row mb-4" *ngIf="statistics">
+        <div class="col-12">
+          <h2 class="mb-3">
+            <i class="ti ti-chart-bar me-2"></i>
+            Statistiques du Système
+          </h2>
+        </div>
+
+        <!-- Total Users Card -->
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-primary text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="ti ti-users fs-1"></i>
+                </div>
+                <div>
+                  <h3 class="mb-0">{{ statistics.totalUsers }}</h3>
+                  <p class="mb-0">Total Utilisateurs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users by Role Cards -->
+        <div class="col-lg-9 col-md-6 mb-3">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Répartition par Rôle</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3" *ngFor="let role of getObjectKeys(statistics.usersByRole)">
+                  <div class="text-center">
+                    <h4 class="text-primary">{{ statistics.usersByRole[role] }}</h4>
+                    <p class="mb-0">{{ role }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users by Sector -->
+        <div class="col-12 mb-3">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Répartition par Secteur</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-2" *ngFor="let sector of getObjectKeys(statistics.usersBySector)">
+                  <div class="text-center">
+                    <h4 class="text-info">{{ statistics.usersBySector[sector] }}</h4>
+                    <p class="mb-0">{{ sector }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports Statistics Section -->
+      <div class="row mb-4" *ngIf="reportStatistics">
+        <div class="col-12">
+          <h2 class="mb-3">
+            <i class="ti ti-file-text me-2"></i>
+            Statistiques des Rapports
+          </h2>
+        </div>
+
+        <!-- Total Reports Card -->
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-success text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="ti ti-file-text fs-1"></i>
+                </div>
+                <div>
+                  <h3 class="mb-0">{{ reportStatistics.totalReports }}</h3>
+                  <p class="mb-0">Total Rapports</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports by Status -->
+        <div class="col-lg-9 col-md-6 mb-3">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Rapports par Statut</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6" *ngFor="let status of getObjectKeys(reportStatistics.reportsByStatus)">
+                  <div class="text-center">
+                    <h4 class="text-success">{{ reportStatistics.reportsByStatus[status] }}</h4>
+                    <p class="mb-0">{{ status }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rectifications Statistics Section -->
+      <div class="row mb-4" *ngIf="rectificationStatistics">
+        <div class="col-12">
+          <h2 class="mb-3">
+            <i class="ti ti-edit me-2"></i>
+            Statistiques des Rectifications
+          </h2>
+        </div>
+
+        <!-- Total Rectifications Card -->
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-warning text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <i class="ti ti-edit fs-1"></i>
+                </div>
+                <div>
+                  <h3 class="mb-0">{{ rectificationStatistics.totalRectifications }}</h3>
+                  <p class="mb-0">Total Rectifications</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rectifications by Status -->
+        <div class="col-lg-9 col-md-6 mb-3">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Rectifications par Statut</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4" *ngFor="let status of getObjectKeys(rectificationStatistics.rectificationsByStatus)">
+                  <div class="text-center">
+                    <h4 class="text-warning">{{ rectificationStatistics.rectificationsByStatus[status] }}</h4>
+                    <p class="mb-0">{{ status }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activities Section -->
+      <div class="row mb-4" *ngIf="recentActivities">
+        <div class="col-12">
+          <h2 class="mb-3">
+            <i class="ti ti-activity me-2"></i>
+            Activités Récentes
+          </h2>
+        </div>
+
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Derniers Utilisateurs Créés</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Email</th>
+                      <th>Rôle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of recentActivities.recentUsers">
+                      <td>{{ user.id }}</td>
+                      <td>{{ user.username }}</td>
+                      <td>{{ user.email }}</td>
+                      <td>
+                        <span class="badge"
+                              [ngClass]="{
+                                'bg-primary': user.role === 'admin',
+                                'bg-success': user.role === 'chef departement',
+                                'bg-info': user.role === 'enseignant',
+                                'bg-warning': user.role === 'rapporteur'
+                              }">
+                          {{ user.role }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Management Section -->
+      <div id="users-section" class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <div>
+                <h5 class="mb-0">
+                  <i class="ti ti-users me-2"></i>
+                  Gestion des Utilisateurs
+                </h5>
+                <small class="text-muted">
+                  {{ filteredUsers.length }} utilisateur(s) affiché(s) sur {{ users.length }} total
+                </small>
+              </div>
+              <button class="btn btn-primary" (click)="openUserModal()">
+                <i class="ti ti-plus me-1"></i>
+                Nouvel Utilisateur
+              </button>
+            </div>
+            <div class="card-body">
+              <!-- Filter Component -->
+              <app-data-filter
+                [config]="userFilterConfig"
+                [data]="users"
+                (filterChange)="onUserFilterChange($event)">
+              </app-data-filter>
+
+              <!-- Loading Spinner -->
+              <div *ngIf="isLoading" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+
+              <!-- Users Table -->
+              <div *ngIf="!isLoading" class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Email</th>
+                      <th>Rôle</th>
+                      <th>Poste</th>
+                      <th>Secteur</th>
+                      <th>Téléphone</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of filteredUsers">
+                      <td>{{ user.id }}</td>
+                      <td>{{ user.username }}</td>
+                      <td>{{ user.email }}</td>
+                      <td>
+                        <span class="badge" 
+                              [ngClass]="{
+                                'bg-primary': user.role === 'admin',
+                                'bg-success': user.role === 'chef departement',
+                                'bg-info': user.role === 'enseignant',
+                                'bg-warning': user.role === 'rapporteur'
+                              }">
+                          {{ user.role }}
+                        </span>
+                      </td>
+                      <td>{{ user.poste }}</td>
+                      <td>{{ user.secteur }}</td>
+                      <td>{{ user.phoneNumber || 'N/A' }}</td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" (click)="openUserModal(user)">
+                          <i class="ti ti-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user)" 
+                                [disabled]="user.role === 'admin' && user.id === currentUser?.id">
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</app-layout>
+
+<!-- User Modal -->
+<div class="modal fade" [class.show]="isUserModalOpen" [style.display]="isUserModalOpen ? 'block' : 'none'"
+     tabindex="-1" role="dialog" *ngIf="isUserModalOpen">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="ti ti-user me-2"></i>
+          {{ isEditMode ? 'Modifier Utilisateur' : 'Nouvel Utilisateur' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeUserModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveUser()" #userForm="ngForm">
+          <div class="row">
+            <!-- Username -->
+            <div class="col-md-6 mb-3">
+              <label for="username" class="form-label">Nom d'utilisateur *</label>
+              <input type="text" class="form-control" id="username" name="username"
+                     [(ngModel)]="newUser.username" required>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input type="email" class="form-control" id="email" name="email"
+                     [(ngModel)]="newUser.email" required [readonly]="isEditMode">
+            </div>
+
+            <!-- Password (only for new users) -->
+            <div class="col-md-6 mb-3" *ngIf="!isEditMode">
+              <label for="password" class="form-label">Mot de passe *</label>
+              <input type="password" class="form-control" id="password" name="password"
+                     [(ngModel)]="newUser.password" required>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="col-md-6 mb-3">
+              <label for="phoneNumber" class="form-label">Numéro de téléphone *</label>
+              <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+                     [(ngModel)]="newUser.phoneNumber" placeholder="+216 XX XXX XXX" required>
+            </div>
+
+            <!-- Role -->
+            <div class="col-md-6 mb-3">
+              <label for="role" class="form-label">Rôle *</label>
+              <select class="form-select" id="role" name="role" [(ngModel)]="newUser.role" required>
+                <option value="">Sélectionner un rôle</option>
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
+            </div>
+
+            <!-- Poste -->
+            <div class="col-md-6 mb-3">
+              <label for="poste" class="form-label">Poste *</label>
+              <input type="text" class="form-control" id="poste" name="poste"
+                     [(ngModel)]="newUser.poste" required>
+            </div>
+
+            <!-- Secteur -->
+            <div class="col-md-12 mb-3">
+              <label for="secteur" class="form-label">Secteur *</label>
+              <select class="form-select" id="secteur" name="secteur" [(ngModel)]="newUser.secteur" required>
+                <option value="">Sélectionner un secteur</option>
+                <option *ngFor="let secteur of secteurs" [value]="secteur">{{ secteur }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            <i class="ti ti-alert-circle me-2"></i>
+            {{ errorMessage }}
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeUserModal()">Annuler</button>
+            <button type="submit" class="btn btn-primary" [disabled]="isLoading || !userForm.form.valid">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade" [class.show]="isUserModalOpen" *ngIf="isUserModalOpen"
+     (click)="closeUserModal()"></div>

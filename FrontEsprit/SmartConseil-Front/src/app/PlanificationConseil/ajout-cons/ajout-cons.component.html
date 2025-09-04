@@ -1,0 +1,316 @@
+<app-layout>
+  <div class="ajout-content">
+    <div class="header-container">
+            <div class="header-text">
+              <h2>Gestion des Conseils</h2>
+              <p>Module 1 - Gestion des Planification et Conseil</p>
+            </div>
+            <button class="add-user-btn">
+              <span class="icon">👤</span> Nouveau Conseil
+            </button>
+          </div>
+
+          <!-- Formulaire Conseil -->
+<div class="row">
+  <div class="form-container">
+    <form [formGroup]="ConseilForm" (ngSubmit)="onSubmit()">
+      <h2>Informations du Conseil</h2>
+      <p class="subtitle">Remplissez les détails du nouveau conseil de classe</p>
+
+      <!-- OPTION + DATE -->
+      <div class="row">
+        <div class="field">
+          <label>Option</label>
+          <select class="form-select" formControlName="optionId" (change)="onOptionChange($any($event.target).value)">
+            <option value="">Sélectionner une option</option>
+            <option *ngFor="let option of Options" [value]="option.id">{{ option.nom }}</option>
+          </select>
+          <div *ngIf="ConseilForm.get('optionId')?.touched && ConseilForm.get('optionId')?.invalid" class="error">
+            L'option est obligatoire.
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input type="date" placeholder="jj/mm/aaaa" formControlName="date" />
+          <div *ngIf="ConseilForm.get('date')?.touched && ConseilForm.get('date')?.invalid" class="error">
+            La date est obligatoire.
+          </div>
+        </div>
+      </div>
+
+      <!-- CLASSES -->
+      <div class="row" *ngIf="Classes.length > 0">
+        <div class="field full">
+          <label>Classes concernées</label>
+          <div class="classes-container">
+            <div *ngFor="let classe of Classes" class="classe-checkbox">
+              <input
+                type="checkbox"
+                [id]="'classe-' + classe.id"
+                [value]="classe.id"
+                (change)="onClasseChange(classe.id, $any($event.target).checked)">
+              <label [for]="'classe-' + classe.id">{{ classe.nom }}</label>
+            </div>
+          </div>
+          <div *ngIf="ConseilForm.get('classeIds')?.touched && selectedClasseIds.length === 0" class="error">
+            Au moins une classe doit être sélectionnée.
+          </div>
+        </div>
+      </div>
+
+      <!-- HEURE + DUREE -->
+      <div class="row">
+        <div class="field">
+          <label>Heure</label>
+          <input type="time" placeholder="--:--" formControlName="heure" />
+          <div *ngIf="ConseilForm.get('heure')?.touched && ConseilForm.get('heure')?.invalid" class="error">
+            L'heure est obligatoire.
+          </div>
+        </div>
+<div class="field">
+  <label>Durée</label>
+  <select formControlName="duree">
+    <option value="" disabled selected>Choisissez une durée</option>
+    <option *ngFor="let duree of durees" [value]="duree">{{ duree }}</option>
+  </select>
+  <div *ngIf="ConseilForm.get('duree')?.touched && ConseilForm.get('duree')?.invalid" class="error">
+    La durée est obligatoire.
+</div>
+
+</div>
+</div>
+
+
+      <!-- SALLE -->
+  <div class="row">
+  <!-- Salle -->
+  <div class="field">
+    <label>Salle</label>
+    <select formControlName="salleId">
+      <option value="">Sélectionner une salle</option>
+      <option *ngFor="let s of Salles" [ngValue]="s.id">{{ s.nomSalle }}</option>
+    </select>
+    <div *ngIf="ConseilForm.get('salleId')?.touched && ConseilForm.get('salleId')?.invalid" class="error">
+      La salle est obligatoire.
+    </div>
+  </div>
+
+  <!-- Président -->
+  <div class="field">
+    <label>Président</label>
+    <select formControlName="presidentId">
+      <option value="">Choisir le président</option>
+      <option *ngFor="let user of getPresidents()" [value]="user.id">
+        {{ user.username }}
+      </option>
+    </select>
+    <div *ngIf="ConseilForm.get('presidentId')?.touched && ConseilForm.get('presidentId')?.invalid" class="error">
+      Le président est obligatoire.
+    </div>
+  </div>
+</div>
+
+
+      <!-- RAPPORTEUR -->
+      <div class="row">
+        <div class="field">
+          <label>Rapporteur</label>
+          <select formControlName="rapporteurId">
+            <option value="">Choisir le rapporteur</option>
+            <option *ngFor="let user of getRapporteurs()" [value]="user.id">
+              {{ user.username }}
+            </option>
+          </select>
+          <div *ngIf="ConseilForm.get('rapporteurId')?.touched && ConseilForm.get('rapporteurId')?.invalid" class="error">
+            Le rapporteur est obligatoire.
+          </div>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="row">
+        <div class="field full">
+          <label>Notes supplémentaires</label>
+          <textarea placeholder="Ajoutez des notes ou commentaires..." formControlName="description"></textarea>
+        </div>
+      </div>
+
+      <!-- IMPORT EXCEL -->
+      <div class="row">
+        <div class="field full">
+          <label>Import Excel des participants</label>
+          <div class="import-excel-container">
+            <input type="file" id="excelFile" (change)="onFileSelected($event)" accept=".xlsx, .xls" />
+            <button type="button" class="import-btn" (click)="importExcel()">
+              <span>📄</span> Importer Excel
+            </button>
+          </div>
+          <!-- Messages d'import -->
+          <div *ngIf="importMessage" class="import-message" [ngClass]="{'success': importSuccess, 'error': importError}">
+            {{ importMessage }}
+          </div>
+          <!-- Barre de progression -->
+          <div *ngIf="progressInfo > 0" class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="progressInfo"></div>
+          </div>
+          <div class="import-info">
+            <small>Format attendu: NO, Option, ID_ET, Nom, Prenom, e_mail_et, ADRESSE_MAIL_ESP</small>
+          </div>
+          
+          <!-- Bouton pour afficher/masquer les données importées -->
+          <button *ngIf="importedData.length > 0" type="button" class="toggle-data-btn" (click)="toggleImportedDataDisplay()">
+            {{ showImportedData ? 'Masquer' : 'Afficher' }} les données importées
+          </button>
+          
+          <!-- Tableau des données importées -->
+          <div *ngIf="showImportedData && importedData.length > 0" class="imported-data-table">
+            <h4>Données importées</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>Option</th>
+                  <th>ID_ET</th>
+                  <th>Nom</th>
+                  <th>Prénom</th>
+                  <th>Email Étudiant</th>
+                  <th>Email ESP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of importedData">
+                  <td>{{ data.no }}</td>
+                  <td>{{ data.option }}</td>
+                  <td>{{ data.idEt }}</td>
+                  <td>{{ data.nom }}</td>
+                  <td>{{ data.prenom }}</td>
+                  <td>{{ data.emailEt }}</td>
+                  <td>{{ data.adresseMailEsp }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+
+         <div class="row">
+        <div class="field full">
+          <label>Import Excel des participants</label>
+          <div class="import-excel-container">
+            <input type="file" id="excelFile" (change)="onFileSelected1($event)" accept=".xlsx, .xls" />
+            <button type="button" class="import-btn" (click)="importExcelEleve()">
+              <span>📄</span> Importer Excel
+            </button>
+          </div>
+          <!-- Messages d'import -->
+          <div *ngIf="importMessage1" class="import-message" [ngClass]="{'success': importSuccess1, 'error': importError1}">
+            {{ importMessage1 }}
+          </div>
+          <!-- Barre de progression -->
+          <div *ngIf="progressInfo1 > 0" class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="progressInfo"></div>
+          </div>
+          <div class="import-info">
+            <small>Format attendu: NO, Option, ID_ET, Nom, Prenom, e_mail_et, ADRESSE_MAIL_ESP</small>
+          </div>
+          
+          <!-- Bouton pour afficher/masquer les données importées -->
+          <button *ngIf="importedData.length > 0" type="button" class="toggle-data-btn" (click)="toggleImportedDataDisplay()">
+            {{ showImportedData ? 'Masquer' : 'Afficher' }} les données importées
+          </button>
+
+       
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+      
+      <!-- BOUTONS -->
+      <div class="actions">
+        <button type="submit" class="primary" >
+          <span>📅</span> Créer le conseil
+        </button>
+        <button type="button" class="secondary">Annuler</button>
+      </div>
+    </form>
+
+    <!-- FOOTER -->
+    <div class="py-6 px-6 text-center">
+      <p class="mb-0 fs-4">
+        Design and Developed by
+        <a href="#" class="pe-1 text-primary text-decoration-underline">Wrappixel.com</a>
+        Distributed by
+        <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .error {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  .classes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+  .classe-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .classe-checkbox:hover {
+    background-color: #f0f8ff;
+    border-color: #007bff;
+  }
+
+  .classe-checkbox input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .classe-checkbox label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .field.full {
+    width: 100%;
+  }
+</style>
+
+  </div> <!-- Fermeture de ajout-content -->
+</app-layout>

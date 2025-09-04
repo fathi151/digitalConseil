@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modifier Conseil - Flexy Admin</title>
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div>
+          <a href="./index.html">
+            <img src="assets/images/logos/esprit.png" alt=""
+              style="width: 180px; height: auto; display: block; margin-left: 40px;" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-6"></i>
+          </div>
+        </div>
+
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <span class="hide-menu">Home</span>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Rectification des Notes</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Planification Conseils</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Gestions rapports</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Gestion Conseil</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <i class="ti ti-atom"></i>
+                <span class="hide-menu">Statistique</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+      </header>
+      <!--  Header End -->
+
+      <div class="body-wrapper-inner">
+        <div class="container-fluid">
+
+          <div class="welcome-header">
+            <h1>Bienvenue dans votre espace</h1>
+            <p>Gérez efficacement vos activités académiques depuis ce tableau de bord</p>
+          </div>
+
+          <!-- Bouton retour -->
+          <div class="header-container">
+            <div class="header-text">
+              <h2>Modification du Conseil</h2>
+              <p>Module 1 - Gestion des conseils de classe</p>
+            </div>
+            <button class="add-user-btn" (click)="onCancel()">
+              <span class="icon">←</span> Retour à la liste
+            </button>
+          </div>
+
+          <!-- Formulaire Conseil -->
+<div class="row">
+  <div class="form-container">
+    <form [formGroup]="ConseilForm" (ngSubmit)="onSubmit()">
+      <h2>Informations du Conseil</h2>
+      <p class="subtitle">Modifiez les détails du conseil de classe</p>
+
+      <!-- CLASSE + DATE -->
+      <div class="row">
+        <div class="field">
+          <label>Classe</label>
+          <select class="form-select" formControlName="classes">
+            <option value="">Sélectionner une classe</option>
+            <option value="1A">1A</option>
+            <option value="1B">1B</option>
+            <option value="2A">2A</option>
+            <option value="2B">2B</option>
+            <option value="3A">3A</option>
+            <option value="4SAE">4SAE</option>
+          </select>
+          <div *ngIf="ConseilForm.get('classes')?.touched && ConseilForm.get('classes')?.invalid" class="error">
+            La classe est obligatoire.
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input type="date" placeholder="jj/mm/aaaa" formControlName="date" />
+          <div *ngIf="ConseilForm.get('date')?.touched && ConseilForm.get('date')?.invalid" class="error">
+            La date est obligatoire.
+          </div>
+        </div>
+      </div>
+
+      <!-- HEURE + DUREE -->
+      <div class="row">
+        <div class="field">
+          <label>Heure</label>
+          <input type="time" placeholder="--:--" formControlName="heure" />
+          <div *ngIf="ConseilForm.get('heure')?.touched && ConseilForm.get('heure')?.invalid" class="error">
+            L'heure est obligatoire.
+          </div>
+        </div>
+<div class="field">
+  <label>Durée</label>
+  <select formControlName="duree">
+    <option value="" disabled>Choisissez une durée</option>
+    <option *ngFor="let duree of durees" [value]="duree">{{ duree }}</option>
+  </select>
+  <div *ngIf="ConseilForm.get('duree')?.touched && ConseilForm.get('duree')?.invalid" class="error">
+    La durée est obligatoire.
+</div>
+
+</div>
+</div>
+
+
+      <!-- SALLE -->
+  <div class="row">
+  <!-- Salle -->
+  <div class="field">
+    <label>Salle</label>
+    <select formControlName="salleId">
+      <option value="">Sélectionner une salle</option>
+      <option *ngFor="let s of Salles" [ngValue]="s.id">{{ s.nomSalle }}</option>
+    </select>
+    <div *ngIf="ConseilForm.get('salleId')?.touched && ConseilForm.get('salleId')?.invalid" class="error">
+      La salle est obligatoire.
+    </div>
+  </div>
+
+  <!-- Président -->
+  <div class="field">
+    <label>Président</label>
+    <select formControlName="presidentId">
+      <option value="">Choisir le président</option>
+      <option *ngFor="let user of getPresidents()" [value]="user.id">
+        {{ user.username }}
+      </option>
+    </select>
+    <div *ngIf="ConseilForm.get('presidentId')?.touched && ConseilForm.get('presidentId')?.invalid" class="error">
+      Le président est obligatoire.
+    </div>
+  </div>
+</div>
+
+
+      <!-- RAPPORTEUR -->
+      <div class="row">
+        <div class="field">
+          <label>Rapporteur</label>
+          <select formControlName="rapporteurId">
+            <option value="">Choisir le rapporteur</option>
+            <option *ngFor="let user of getRapporteurs()" [value]="user.id">
+              {{ user.username }}
+            </option>
+          </select>
+          <div *ngIf="ConseilForm.get('rapporteurId')?.touched && ConseilForm.get('rapporteurId')?.invalid" class="error">
+            Le rapporteur est obligatoire.
+          </div>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="row">
+        <div class="field full">
+          <label>Notes supplémentaires</label>
+          <textarea placeholder="Ajoutez des notes ou commentaires..." formControlName="description"></textarea>
+        </div>
+      </div>
+
+      <!-- BOUTONS -->
+      <div class="actions">
+        <button type="submit" class="primary" style="background-color: black;" [disabled]="!ConseilForm.valid">
+          <span></span> Modifier le conseil
+        </button>
+        <button type="button" class="secondary" (click)="onCancel()">Annuler</button>
+      </div>
+    </form>
+
+    <!-- FOOTER -->
+    <div class="py-6 px-6 text-center">
+      <p class="mb-0 fs-4">
+        Design and Developed by
+        <a href="#" class="pe-1 text-primary text-decoration-underline">Wrappixel.com</a>
+        Distributed by
+        <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .error {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  
+  .primary:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+</style>
+
+
+        </div> <!-- end container-fluid -->
+      </div> <!-- end body-wrapper-inner -->
+    </div> <!-- end body-wrapper -->
+  </div> <!-- end page-wrapper -->
+
+  <!-- JS includes -->
+  <script src="./assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/js/sidebarmenu.js"></script>
+  <script src="./assets/js/app.min.js"></script>
+  <script src="./assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="./assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="./assets/js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+</body>
+
+</html>

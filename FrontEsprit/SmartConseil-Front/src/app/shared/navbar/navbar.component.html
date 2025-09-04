@@ -1,0 +1,89 @@
+<header class="app-header">
+  <nav class="navbar navbar-expand-lg navbar-light w-100">
+    <!-- Left side - Mobile menu toggle -->
+    <div class="d-flex align-items-center">
+      <ul class="navbar-nav">
+        <li class="nav-item d-block d-xl-none">
+          <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)" (click)="toggleSidebar()">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="navbar-center d-none d-lg-flex">
+      <div class="navbar-welcome">
+        <div class="navbar-welcome-text">Bienvenue {{currentUser?.username}}</div>
+        <div class="navbar-welcome-subtitle" *ngIf="currentUser?.role === 'admin'">
+          Tableau de bord Administrateur - Gestion complète du système
+        </div>
+        <div class="navbar-welcome-subtitle" *ngIf="currentUser?.role === 'enseignant'">
+          Tableau de bord Enseignant - Gestion des cours et évaluations
+        </div>
+        <div class="navbar-welcome-subtitle" *ngIf="currentUser?.role === 'chef departement'">
+          Tableau de bord Chef de Département - Supervision et coordination
+        </div>
+        <div class="navbar-welcome-subtitle" *ngIf="currentUser?.role === 'rapporteur'">
+          Tableau de bord Rapporteur - Gestion des rapports et analyses
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side - Notifications and Profile -->
+    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+      <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+        <!-- Notifications -->
+        <li class="nav-item dropdown me-3">
+          <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="ti ti-bell-ringing"></i>
+            <div class="notification bg-primary rounded-circle"></div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop1">
+            <div class="message-body">
+              <div class="d-flex align-items-center gap-2 dropdown-item">
+                <i class="ti ti-info-circle fs-6"></i>
+                <p class="mb-0 fs-3">Aucune notification</p>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- User Profile Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon-hover profile-picture-nav" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <app-profile-picture
+              [email]="currentUser?.email || ''"
+              size="medium"
+              [showBorder]="true"
+              [alt]="currentUser?.username || 'Profile'">
+            </app-profile-picture>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+            <div class="message-body">
+              <div class="d-flex align-items-center gap-2 dropdown-item">
+                <i class="ti ti-user fs-6"></i>
+                <p class="mb-0 fs-3">{{currentUser?.username}}</p>
+              </div>
+              <div class="d-flex align-items-center gap-2 dropdown-item">
+                <i class="ti ti-shield fs-6"></i>
+                <p class="mb-0 fs-3">{{currentUser?.role}}</p>
+              </div>
+              <hr class="dropdown-divider">
+              <a href="javascript:void(0)" (click)="navigateToProfile()" class="d-flex align-items-center gap-2 dropdown-item">
+                <i class="ti ti-settings fs-6"></i>
+                <p class="mb-0 fs-3">Mon Profil</p>
+              </a>
+              <a href="javascript:void(0)" (click)="logout()" class="d-flex align-items-center gap-2 dropdown-item">
+                <i class="ti ti-power fs-6"></i>
+                <p class="mb-0 fs-3">Déconnexion</p>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

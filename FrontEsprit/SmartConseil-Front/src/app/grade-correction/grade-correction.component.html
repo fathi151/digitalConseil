@@ -1,0 +1,288 @@
+<app-layout>
+  <div class="row">
+    <div class="col-12">
+
+      <!-- Success/Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+      </div>
+      
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+      </div>
+
+      <!-- Rectification Form -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>Nouvelle Demande de Rectification</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #rectificationForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="etudiantPrenom" class="form-label">Prénom de l'étudiant *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="etudiantPrenom" 
+                    [(ngModel)]="formData.etudiantPrenom" 
+                    name="etudiantPrenom" 
+                    required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="etudiantNom" class="form-label">Nom de l'étudiant *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="etudiantNom" 
+                    [(ngModel)]="formData.etudiantNom" 
+                    name="etudiantNom" 
+                    required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Secteur -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="secteur" class="form-label">Secteur *</label>
+                  <select
+                    class="form-select"
+                    id="secteur"
+                    name="secteur"
+                    [(ngModel)]="selectedSecteur"
+                    (change)="onSecteurChange()"
+                    required>
+                    <option value="">Sélectionner un secteur</option>
+                    <option *ngFor="let secteur of secteurs" [value]="secteur">{{ secteur }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Option -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="option" class="form-label">Option *</label>
+                  <select
+                    class="form-select"
+                    id="option"
+                    name="option"
+                    [(ngModel)]="selectedOption"
+                    (change)="onOptionChange()"
+                    [disabled]="!selectedSecteur"
+                    required>
+                    <option value="">Sélectionner une option</option>
+                    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Classe -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="classe" class="form-label">Classe *</label>
+                  <select
+                    class="form-select"
+                    id="classe"
+                    name="classe"
+                    [(ngModel)]="formData.classe"
+                    [disabled]="!selectedOption"
+                    required>
+                    <option value="">Sélectionner une classe</option>
+                    <option *ngFor="let classe of classes" [value]="classe">{{ classe }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="ancienneNote" class="form-label">Ancienne Note *</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="ancienneNote" 
+                    [(ngModel)]="formData.ancienneNote" 
+                    name="ancienneNote" 
+                    min="0" 
+                    max="20" 
+                    step="0.01" 
+                    required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="nouvelleNote" class="form-label">Nouvelle Note *</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="nouvelleNote" 
+                    [(ngModel)]="formData.nouvelleNote" 
+                    name="nouvelleNote" 
+                    min="0" 
+                    max="20" 
+                    step="0.01" 
+                    required>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="justification" class="form-label">Justification *</label>
+              <select class="form-select" id="justification" name="justification"
+                      [(ngModel)]="formData.justification" required>
+                <option value="">Sélectionner une justification</option>
+                <option *ngFor="let justification of justifications" [value]="justification">
+                  {{ justification }}
+                </option>
+              </select>
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-primary" 
+              [disabled]="isSubmitting || !rectificationForm.form.valid">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              {{ isSubmitting ? 'Envoi en cours...' : 'Soumettre la demande' }}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- My Requests -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>Mes Demandes en Cours</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="myRequests.length === 0" class="text-muted">
+            Aucune demande en cours.
+          </div>
+          <div *ngIf="myRequests.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Étudiant</th>
+                  <th>Classe</th>
+                  <th>Option</th>
+                  <th>Ancienne Note</th>
+                  <th>Nouvelle Note</th>
+                  <th>Statut</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let request of myRequests">
+                  <td>{{ request.etudiantPrenom }} {{ request.etudiantNom }}</td>
+                  <td>{{ request.classe }}</td>
+                  <td>{{ request.option }}</td>
+                  <td>{{ request.ancienneNote }}</td>
+                  <td>{{ request.nouvelleNote }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusBadgeClass(request.status)">
+                      {{ getStatusText(request.status) }}
+                    </span>
+                  </td>
+                  <td>{{ request.dateDemande | date:'short' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="card">
+        <div class="card-header">
+          <h5>Historique des Demandes</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="history.length === 0" class="text-muted">
+            Aucun historique disponible.
+          </div>
+          <div *ngIf="history.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Étudiant</th>
+                  <th>Classe</th>
+                  <th>Option</th>
+                  <th>Ancienne Note</th>
+                  <th>Nouvelle Note</th>
+                  <th>Statut</th>
+                  <th>Date Demande</th>
+                  <th>Date Traitement</th>
+                  <th>Motif Refus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of history">
+                  <td>{{ item.etudiantPrenom }} {{ item.etudiantNom }}</td>
+                  <td>{{ item.classe }}</td>
+                  <td>{{ item.option }}</td>
+                  <td>{{ item.ancienneNote }}</td>
+                  <td>{{ item.nouvelleNote }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusBadgeClass(item.status)">
+                      {{ getStatusText(item.status) }}
+                    </span>
+                  </td>
+                  <td>{{ item.dateDemande | date:'short' }}</td>
+                  <td>{{ item.dateTraitement | date:'short' }}</td>
+                  <td>{{ item.motifRefus || '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>
+
+<!-- SMS Verification Modal 
+<div class="modal" [class.show]="showSmsModal" [style.display]="showSmsModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vérification SMS</h5>
+        <button type="button" class="btn-close" (click)="closeSmsModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Un code de vérification a été envoyé par SMS. Veuillez saisir le code reçu :</p>
+        <div class="mb-3">
+          <label for="smsCode" class="form-label">Code SMS</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="smsCode" 
+            [(ngModel)]="smsVerification.smsCode" 
+            placeholder="Saisir le code à 6 chiffres"
+            maxlength="6">
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeSmsModal()">Annuler</button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="onVerifySms()" 
+          [disabled]="isVerifying || !smsVerification.smsCode">
+          <span *ngIf="isVerifying" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isVerifying ? 'Vérification...' : 'Vérifier' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showSmsModal" class="modal-backdrop fade show"></div>-->

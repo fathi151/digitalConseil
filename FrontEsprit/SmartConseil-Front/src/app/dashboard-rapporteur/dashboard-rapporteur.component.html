@@ -1,0 +1,36 @@
+<app-layout>
+
+      <div class="welcome-header">
+        <h1>Bienvenue {{currentUser?.username}}</h1>
+        <p>Tableau de bord Rapporteur - Gérez vos rapports de classe</p>
+      </div>
+
+      <!-- Dashboard Cards -->
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="card" (click)="navigateToReportManagement()" style="cursor: pointer;">
+            <div class="card-body">
+              <div class="row align-items-start">
+                <div class="col-8">
+                  <h5 class="card-title mb-9 fw-semibold">Rapports</h5>
+                  <h4 class="fw-semibold mb-3">Gestion des rapports</h4>
+                  <div class="d-flex align-items-center pb-1">
+                    <span class="me-2 rounded-circle bg-light-primary round-20 d-flex align-items-center justify-content-center">
+                      <i class="ti ti-arrow-up-right text-primary"></i>
+                    </span>
+                    <p class="text-dark me-1 fs-3 mb-0">Créer et gérer</p>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-end">
+                    <div class="text-white bg-primary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                      <i class="ti ti-file-text fs-6"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</app-layout>
