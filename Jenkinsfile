@@ -10,13 +10,7 @@ pipeline {
         
         stage('Build Backend Services') {
             parallel {
-                stage('Build Conseil Service') {
-                    steps {
-                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
-                            bat 'mvn clean package -DskipTests'
-                        }
-                    }
-                }
+             
                 
                 stage('Build Planification Service') {
                     steps {
