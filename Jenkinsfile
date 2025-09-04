@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_REGISTRY = 'https://hub.docker.com/repositories/fathimaddeh47899' // Replace with your Docker registry URL
+        DOCKER_REGISTRY = 'your-registry-url' // Replace with your Docker registry URL
         IMAGE_TAG = "${BUILD_NUMBER}"
         MYSQL_ROOT_PASSWORD = ''
         MYSQL_DATABASE = 'conseil'
@@ -20,8 +20,8 @@ pipeline {
                 stage('Build Conseil Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
-                            sh 'mvn clean package -DskipTests'
-                            sh "docker build -t conseil-service:${IMAGE_TAG} ."
+                            bat 'mvn clean package -DskipTests'
+                            bat "docker build -t conseil-service:${IMAGE_TAG} ."
                         }
                     }
                 }
@@ -29,8 +29,8 @@ pipeline {
                 stage('Build Planification Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
-                            sh 'mvn clean package -DskipTests'
-                            sh "docker build -t planification-service:${IMAGE_TAG} ."
+                            bat 'mvn clean package -DskipTests'
+                            bat "docker build -t planification-service:${IMAGE_TAG} ."
                         }
                     }
                 }
@@ -38,8 +38,8 @@ pipeline {
                 stage('Build Rapport Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
-                            sh 'mvn clean package -DskipTests'
-                            sh "docker build -t rapport-service:${IMAGE_TAG} ."
+                            bat 'mvn clean package -DskipTests'
+                            bat "docker build -t rapport-service:${IMAGE_TAG} ."
                         }
                     }
                 }
@@ -47,8 +47,8 @@ pipeline {
                 stage('Build Rectification Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
-                            sh 'mvn clean package -DskipTests'
-                            sh "docker build -t rectification-service:${IMAGE_TAG} ."
+                            bat 'mvn clean package -DskipTests'
+                            bat "docker build -t rectification-service:${IMAGE_TAG} ."
                         }
                     }
                 }
@@ -56,8 +56,8 @@ pipeline {
                 stage('Build User Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
-                            sh 'mvn clean package -DskipTests'
-                            sh "docker build -t user-service:${IMAGE_TAG} ."
+                            bat 'mvn clean package -DskipTests'
+                            bat "docker build -t user-service:${IMAGE_TAG} ."
                         }
                     }
                 }
@@ -67,7 +67,7 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('FrontEsprit/SmartConseil-Front') {
-                    sh "docker build -t frontend-app:${IMAGE_TAG} ."
+                    bat "docker build -t frontend-app:${IMAGE_TAG} ."
                 }
             }
         }
@@ -87,7 +87,7 @@ pipeline {
                             
                             services.each { service ->
                                 dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
-                                    sh 'mvn test'
+                                    bat 'mvn test'
                                 }
                             }
                         }
@@ -102,8 +102,8 @@ pipeline {
                 stage('Frontend Tests') {
                     steps {
                         dir('FrontEsprit/SmartConseil-Front') {
-                            sh 'npm ci'
-                            sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
+                            bat 'npm ci'
+                            bat 'npm run test -- --watch=false --browsers=ChromeHeadless'
                         }
                     }
                     post {
@@ -129,13 +129,13 @@ pipeline {
                     
                     services.each { service ->
                         dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
-                            sh 'mvn org.owasp:dependency-check-maven:check'
+                            bat 'mvn org.owasp:dependency-check-maven:check'
                         }
                     }
                     
                     // NPM Audit for frontend
                     dir('FrontEsprit/SmartConseil-Front') {
-                        sh 'npm audit --audit-level moderate'
+                        bat 'npm audit --audit-level moderate'
                     }
                 }
             }
@@ -145,28 +145,34 @@ pipeline {
             steps {
                 script {
                     // Start services for integration testing
-                    sh 'docker-compose -f docker-compose.yml up -d mysql'
-                    sh 'sleep 30' // Wait for MySQL to be ready
+                    bat 'docker-compose -f docker-compose.yml up -d mysql'
+                    bat 'timeout /t 30 /nobreak' // Wait for MySQL to be ready (Windows equivalent of sleep)
                     
                     // Run integration tests
-                    sh 'docker-compose -f docker-compose.yml up -d'
-                    sh 'sleep 60' // Wait for all services to be ready
+                    bat 'docker-compose -f docker-compose.yml up -d'
+                    bat 'timeout /t 60 /nobreak' // Wait for all services to be ready
                     
                     // Add your integration test commands here
-                    // Example: API health checks
-                    sh '''
-                        curl -f http://localhost:8081/actuator/health || exit 1
-                        curl -f http://localhost:8082/actuator/health || exit 1
-                        curl -f http://localhost:8083/actuator/health || exit 1
-                        curl -f http://localhost:8084/actuator/health || exit 1
-                        curl -f http://localhost:8085/actuator/health || exit 1
-                        curl -f http://localhost:4200 || exit 1
+                    // Example: API health checks using PowerShell
+                    powershell '''
+                        try {
+                            Invoke-RestMethod -Uri "http://localhost:8081/actuator/health" -Method Get
+                            Invoke-RestMethod -Uri "http://localhost:8082/actuator/health" -Method Get
+                            Invoke-RestMethod -Uri "http://localhost:8083/actuator/health" -Method Get
+                            Invoke-RestMethod -Uri "http://localhost:8084/actuator/health" -Method Get
+                            Invoke-RestMethod -Uri "http://localhost:8085/actuator/health" -Method Get
+                            Invoke-RestMethod -Uri "http://localhost:4200" -Method Get
+                            Write-Host "All health checks passed!"
+                        } catch {
+                            Write-Error "Health check failed: $_"
+                            exit 1
+                        }
                     '''
                 }
             }
             post {
                 always {
-                    sh 'docker-compose -f docker-compose.yml down -v'
+                    bat 'docker-compose -f docker-compose.yml down -v'
                 }
             }
         }
@@ -191,10 +197,10 @@ pipeline {
                     ]
                     
                     images.each { image ->
-                        sh "docker tag ${image}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${image}:${IMAGE_TAG}"
-                        sh "docker tag ${image}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${image}:latest"
-                        sh "docker push ${DOCKER_REGISTRY}/${image}:${IMAGE_TAG}"
-                        sh "docker push ${DOCKER_REGISTRY}/${image}:latest"
+                        bat "docker tag ${image}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${image}:${IMAGE_TAG}"
+                        bat "docker tag ${image}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${image}:latest"
+                        bat "docker push ${DOCKER_REGISTRY}/${image}:${IMAGE_TAG}"
+                        bat "docker push ${DOCKER_REGISTRY}/${image}:latest"
                     }
                 }
             }
@@ -206,10 +212,10 @@ pipeline {
             }
             steps {
                 script {
-                    // Deploy to staging environment
-                    sh '''
+                    // Deploy to staging environment using PowerShell
+                    powershell '''
                         # Update docker-compose with new image tags
-                        sed -i "s/:latest/:${IMAGE_TAG}/g" docker-compose.yml
+                        (Get-Content docker-compose.yml) -replace ':latest', (':' + $env:IMAGE_TAG) | Set-Content docker-compose.yml
                         
                         # Deploy to staging
                         docker-compose -f docker-compose.yml up -d
@@ -227,10 +233,10 @@ pipeline {
                     // Add manual approval for production deployment
                     input message: 'Deploy to Production?', ok: 'Deploy'
                     
-                    // Deploy to production environment
-                    sh '''
+                    // Deploy to production environment using PowerShell
+                    powershell '''
                         # Update docker-compose with new image tags
-                        sed -i "s/:latest/:${IMAGE_TAG}/g" docker-compose.yml
+                        (Get-Content docker-compose.yml) -replace ':latest', (':' + $env:IMAGE_TAG) | Set-Content docker-compose.yml
                         
                         # Deploy to production
                         docker-compose -f docker-compose.yml up -d
@@ -243,7 +249,7 @@ pipeline {
     post {
         always {
             // Clean up Docker images to save space
-            sh 'docker system prune -f'
+            bat 'docker system prune -f'
             
             // Archive artifacts
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
