@@ -1,48 +1,66 @@
 pipeline {
     agent any
-
-    tools {
-        maven 'Maven3'       // Configure Maven dans Jenkins (Manage Jenkins > Global Tool Configuration)
-        jdk 'JDK22'          // Configure ton JDK dans Jenkins (ex: JDK 17 ou 21)
-        nodejs 'Node16'      // Configure Node.js pour le frontend
-    }
-
+    
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
-        stage('Build Backend') {
-            steps {
-                script {
-                    def services = [
-                        'microserviceConseil',
-                        'microservicePlanification',
-                        'microserviceRapport',
-                        'microserviceRectification',
-                        'microserviceUser'
-                    ]
-
-                    services.each { service ->
-                        dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
+        
+        stage('Build Backend Services') {
+            parallel {
+                stage('Build Conseil Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
+                            bat 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                
+                stage('Build Planification Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
+                            bat 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                
+                stage('Build Rapport Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
+                            bat 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                
+                stage('Build Rectification Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
+                            bat 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                
+                stage('Build User Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
                             bat 'mvn clean package -DskipTests'
                         }
                     }
                 }
             }
         }
-
+        
         stage('Build Frontend') {
             steps {
                 dir('FrontEsprit/SmartConseil-Front') {
-                    bat 'npm install'
-                    bat 'npm run build -- --prod'
+                    bat 'npm ci'
+                    bat 'npm run build'
                 }
             }
         }
-
+        
         stage('Run Tests') {
             parallel {
                 stage('Backend Tests') {
@@ -50,12 +68,12 @@ pipeline {
                         script {
                             def services = [
                                 'microserviceConseil',
-                                'microservicePlanification',
+                                'microservicePlanification', 
                                 'microserviceRapport',
                                 'microserviceRectification',
                                 'microserviceUser'
                             ]
-
+                            
                             services.each { service ->
                                 dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
                                     bat 'mvn test'
@@ -69,7 +87,7 @@ pipeline {
                         }
                     }
                 }
-
+                
                 stage('Frontend Tests') {
                     steps {
                         dir('FrontEsprit/SmartConseil-Front') {
@@ -85,17 +103,19 @@ pipeline {
             }
         }
     }
-
+    
     post {
         always {
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'FrontEsprit/SmartConseil-Front/dist/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/dist/**', allowEmptyArchive: true
         }
+        
         success {
-            echo '✅ Pipeline succeeded!'
+            echo 'Pipeline succeeded!'
         }
+        
         failure {
-            echo '❌ Pipeline failed!'
+            echo 'Pipeline failed!'
         }
     }
 }
