@@ -1,17 +1,29 @@
 pipeline {
     agent any
-    
+
+    parameters {
+        string(name: 'DB_URL', defaultValue: 'jdbc:mysql://localhost:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true', description: 'Database URL for testing')
+        string(name: 'DB_USERNAME', defaultValue: 'root', description: 'Database username for testing')
+        password(name: 'DB_PASSWORD', defaultValue: '', description: 'Database password for testing')
+    }
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        
+
         stage('Build Backend Services') {
             parallel {
-             
-                
+                stage('Build Conseil Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
+                            bat 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+
                 stage('Build Planification Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
@@ -19,7 +31,7 @@ pipeline {
                         }
                     }
                 }
-                
+
                 stage('Build Rapport Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
@@ -27,7 +39,7 @@ pipeline {
                         }
                     }
                 }
-                
+
                 stage('Build Rectification Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
@@ -35,7 +47,7 @@ pipeline {
                         }
                     }
                 }
-                
+
                 stage('Build User Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
@@ -45,7 +57,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build Frontend') {
             steps {
                 dir('FrontEsprit/SmartConseil-Front') {
@@ -54,23 +66,25 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Run Tests') {
             parallel {
                 stage('Backend Tests') {
                     steps {
                         script {
                             def services = [
-                              
-                                'microservicePlanification', 
+                                'microserviceConseil',
+                                'microservicePlanification',
                                 'microserviceRapport',
                                 'microserviceRectification',
                                 'microserviceUser'
                             ]
-                            
-                            services.each { service ->
-                                dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
-                                    bat 'mvn test'
+
+                            withCredentials([string(credentialsId: 'DB_PASSWORD', variable: 'DB_PASSWORD_CRED')]) {
+                                services.each { service ->
+                                    dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
+                                        bat "mvn test -Dspring.datasource.url=${params.DB_URL} -Dspring.datasource.username=${params.DB_USERNAME} -Dspring.datasource.password=${DB_PASSWORD_CRED}"
+                                    }
                                 }
                             }
                         }
@@ -81,7 +95,7 @@ pipeline {
                         }
                     }
                 }
-                
+
                 stage('Frontend Tests') {
                     steps {
                         dir('FrontEsprit/SmartConseil-Front') {
@@ -97,17 +111,17 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             archiveArtifacts artifacts: '**/dist/**', allowEmptyArchive: true
         }
-        
+
         success {
             echo 'Pipeline succeeded!'
         }
-        
+
         failure {
             echo 'Pipeline failed!'
         }
