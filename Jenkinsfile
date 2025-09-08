@@ -65,14 +65,14 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                bat 'docker-compose -f docker-compose.yaml build'
+                bat 'docker-compose -f docker-compose.yml build'
             }
         }
 
         // Optionnel : déploiement local avec docker-compose up
         stage('Run with Docker Compose') {
             steps {
-                bat 'docker-compose -f docker-compose.yaml up -d'
+                bat 'docker-compose -f docker-compose.yml up -d'
             }
         }
     }
