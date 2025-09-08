@@ -4,20 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4a4a2be-f96e-4061-9549-b1843fe13e06" name="Changes" comment="" />
+    <list default="true" id="c4a4a2be-f96e-4061-9549-b1843fe13e06" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEsprit/SmartConseil-Front/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEsprit/SmartConseil-Front/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEsprit/SmartConseil-Front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEsprit/SmartConseil-Front/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEsprit/SmartConseil-Front/src/app/utilisateur/utilisateur.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEsprit/SmartConseil-Front/src/app/utilisateur/utilisateur.service.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "contexts": [
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiProvider">{
+  &quot;contexts&quot;: [
     {
-      "name": "docker-desktop"
+      &quot;name&quot;: &quot;docker-desktop&quot;
     }
   ],
-  "isMigrated": true
-}]]></component>
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="KubernetesSettings">
     <option name="contextName" value="docker-desktop" />
   </component>
@@ -34,6 +44,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.MicroservicePlanificationApplication.executor": "Run",
@@ -41,8 +55,9 @@
     "Spring Boot.MicroserviceRectificationApplication.executor": "Run",
     "Spring Boot.MicroserviceUserApplication.executor": "Run",
     "com.codeium.enabled": "true",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Desktop/bigEspritProject",
+    "last_opened_file_path": "C:/Users/Lenovo/Desktop/GestionEquip-main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -61,7 +76,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.MicroservicePlanificationApplication">
+  <component name="RunManager" selected="Spring Boot.MicroserviceUserApplication">
     <configuration name="MicroservicePlanificationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="microservice5" />
@@ -105,7 +120,9 @@
       <updated>1756986460569</updated>
       <workItem from="1756986461578" duration="22000" />
       <workItem from="1757028926931" duration="64000" />
-      <workItem from="1757060421668" duration="802000" />
+      <workItem from="1757060421668" duration="815000" />
+      <workItem from="1757065547610" duration="2845000" />
+      <workItem from="1757089665024" duration="66000" />
     </task>
     <servers />
   </component>

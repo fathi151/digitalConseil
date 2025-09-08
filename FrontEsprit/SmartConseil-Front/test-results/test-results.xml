@@ -1,0 +1,393 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome Headless 139.0.0.0 (Windows 10)" package="" timestamp="2025-09-08T10:40:57" id="0" hostname="DESKTOP-13SSCQ8" tests="47" errors="0" failures="22" time="0.579">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.0.0 Safari/537.36"/>
+  </properties>
+  <testcase name="ConseilService should be created" time="0.018" classname="ConseilService">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ConseilService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ConseilService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///ConseilService/ɵfac.js:4:42)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="SessionConseilComponent should create" time="0.046" classname="SessionConseilComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ActivatedRoute -&gt; ActivatedRoute]: 
+  NullInjectorError: No provider for ActivatedRoute!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivatedRoute', 'ActivatedRoute' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///SessionConseilComponent/ɵfac.js:4:51)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="WebSocketService should be created" time="0.003" classname="WebSocketService"/>
+  <testcase name="ResetPasswordComponent should create" time="0.015" classname="ResetPasswordComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ActivatedRoute -&gt; ActivatedRoute]: 
+  NullInjectorError: No provider for ActivatedRoute!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivatedRoute', 'ActivatedRoute' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///ResetPasswordComponent/ɵfac.js:4:50)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="DashboardChefComponent should create" time="0.016" classname="DashboardChefComponent">
+    <failure type="">Error: NG0304: 'app-layout' is not a known element (used in the 'DashboardChefComponent' component template):
+1. If 'app-layout' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+2. If 'app-layout' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+error properties: Object({ code: 304 })
+    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+    at ɵɵelementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+    at templateFn (ng:///DashboardChefComponent.js:7:9)
+    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+    at initComponent (node_modules/@angular/core/fesm2022/testing.mjs:27492:51)
+</failure>
+  </testcase>
+  <testcase name="AuthService should be created" time="0.004" classname="AuthService"/>
+  <testcase name="MotpasseComponent should create" time="0.016" classname="MotpasseComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[UtilisateurService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UtilisateurService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///UtilisateurService/ɵfac.js:4:46)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="DashboardEnseignantComponent should create" time="0.01" classname="DashboardEnseignantComponent">
+    <failure type="">Error: NG0304: 'app-layout' is not a known element (used in the 'DashboardEnseignantComponent' component template):
+1. If 'app-layout' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+2. If 'app-layout' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+error properties: Object({ code: 304 })
+    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+    at ɵɵelementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+    at templateFn (ng:///DashboardEnseignantComponent.js:15:9)
+    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+    at initComponent (node_modules/@angular/core/fesm2022/testing.mjs:27492:51)
+</failure>
+  </testcase>
+  <testcase name="RectificationComponent should create" time="0.023" classname="RectificationComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[RectificationService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'RectificationService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///RectificationService/ɵfac.js:4:48)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="DashboardComponent should create" time="0.04" classname="DashboardComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///DashboardComponent/ɵfac.js:4:46)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="RectificationService should be created" time="0.001" classname="RectificationService">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[RectificationService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'RectificationService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///RectificationService/ɵfac.js:4:48)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="RoleGuard should be created" time="0.004" classname="RoleGuard"/>
+  <testcase name="ConseilEnCoursComponent should create" time="0.007" classname="ConseilEnCoursComponent"/>
+  <testcase name="UtilisateurService should be created" time="0.002" classname="UtilisateurService">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[UtilisateurService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UtilisateurService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///UtilisateurService/ɵfac.js:4:46)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="EnseignantConseilComponent should create" time="0.033" classname="EnseignantConseilComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ConseilService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ConseilService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///ConseilService/ɵfac.js:4:42)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="AjoutConsComponent should create" time="0.036" classname="AjoutConsComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ConseilService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ConseilService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///ConseilService/ɵfac.js:4:42)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="UtilisateurComponent should create" time="0.014" classname="UtilisateurComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[UtilisateurService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UtilisateurService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///UtilisateurService/ɵfac.js:4:46)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="ConseilComponent should create" time="0.021" classname="ConseilComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClientModule -&gt; HttpClientModule]: 
+  NullInjectorError: No provider for HttpClientModule!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClientModule', 'HttpClientModule' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///ConseilComponent/ɵfac.js:5:7)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="PresidentCoseilComponent should create" time="0.016" classname="PresidentCoseilComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ConseilService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ConseilService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///ConseilService/ɵfac.js:4:42)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="SalleComponent should create" time="0.012" classname="SalleComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClientModule -&gt; HttpClientModule]: 
+  NullInjectorError: No provider for HttpClientModule!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClientModule', 'HttpClientModule' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///SalleComponent/ɵfac.js:5:7)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="CouncilManagementService should start council session" time="0.006" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should submit vote" time="0.002" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should get top students" time="0.001" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should validate token" time="0.002" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should get special cases" time="0.001" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should get councils" time="0.002" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should be created" time="0.002" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should handle local storage operations" time="0.001" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should get council sessions" time="0.001" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should submit absence justification" time="0.001" classname="CouncilManagementService"/>
+  <testcase name="CouncilManagementService should get statistics" time="0.001" classname="CouncilManagementService"/>
+  <testcase name="ListSalleComponent should create" time="0.007" classname="ListSalleComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClientModule -&gt; HttpClientModule]: 
+  NullInjectorError: No provider for HttpClientModule!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClientModule', 'HttpClientModule' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///ListSalleComponent/ɵfac.js:5:7)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="RappoteurConseilsComponent should create" time="0.021" classname="RappoteurConseilsComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[ConseilService -&gt; HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ConseilService', 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+    at ɵɵinject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+    at Object.factory (ng:///ConseilService/ɵfac.js:4:42)
+    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+</failure>
+  </testcase>
+  <testcase name="AdminSetupComponent should create" time="0.008" classname="AdminSetupComponent"/>
+  <testcase name="ModifierConsComponent should create" time="0.012" classname="ModifierConsComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClientModule -&gt; HttpClientModule]: 
+  NullInjectorError: No provider for HttpClientModule!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClientModule', 'HttpClientModule' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///ModifierConsComponent/ɵfac.js:5:7)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="CouncilManagementComponent should handle voting correctly" time="0.038" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should calculate statistics correctly" time="0.023" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should create" time="0.016" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should initialize with default data" time="0.011" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should generate token correctly" time="0.015" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should validate status labels" time="0.017" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should handle modal operations" time="0.014" classname="CouncilManagementComponent"/>
+  <testcase name="CouncilManagementComponent should handle council session management" time="0.029" classname="CouncilManagementComponent"/>
+  <testcase name="AuthGuard should be created" time="0.002" classname="AuthGuard"/>
+  <testcase name="AppComponent should create the app" time="0.004" classname="AppComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///AppComponent/ɵfac.js:4:40)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="AppComponent should have as title 'conseil'" time="0.003" classname="AppComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///AppComponent/ɵfac.js:4:40)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <testcase name="AppComponent should render title" time="0.002" classname="AppComponent">
+    <failure type="">NullInjectorError: R3InjectorError(DynamicTestModule)[HttpClient -&gt; HttpClient]: 
+  NullInjectorError: No provider for HttpClient!
+error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'HttpClient', 'HttpClient' ] })
+    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+    at ɵɵdirectiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+    at NodeInjectorFactory.factory (ng:///AppComponent/ɵfac.js:4:40)
+    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+</failure>
+  </testcase>
+  <system-out>
+    <![CDATA[Chrome Headless 139.0.0.0 (Windows 10) ALERT: 'Vote enregistré: Approuvé'
+,Chrome Headless 139.0.0.0 (Windows 10) ALERT: 'Vous avez déjà voté pour cet étudiant'
+,Chrome Headless 139.0.0.0 (Windows 10) ALERT: 'Conseil démarré pour la classe 3INFO2. Token: XKNNNBZT'
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>
