@@ -16,7 +16,6 @@ pipeline {
 
         stage('Build Backend Services') {
             parallel {
-               
                 stage('Build Planification Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
@@ -24,7 +23,6 @@ pipeline {
                         }
                     }
                 }
-
                 stage('Build Rapport Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
@@ -32,7 +30,6 @@ pipeline {
                         }
                     }
                 }
-
                 stage('Build Rectification Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
@@ -40,7 +37,6 @@ pipeline {
                         }
                     }
                 }
-
                 stage('Build User Service') {
                     steps {
                         dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
@@ -66,7 +62,6 @@ pipeline {
                     steps {
                         script {
                             def services = [
-                              
                                 'microservicePlanification',
                                 'microserviceRapport',
                                 'microserviceRectification',
@@ -82,11 +77,6 @@ pipeline {
                             }
                         }
                     }
-                    post {
-                        always {
-                            junit '**/target/surefire-reports/*.xml'
-                        }
-                    }
                 }
 
                 stage('Frontend Tests') {
@@ -95,26 +85,15 @@ pipeline {
                             bat 'npm run test -- --watch=false --browsers=ChromeHeadless'
                         }
                     }
-                    post {
-                        always {
-                            junit '**/test-results.xml'
-                        }
-                    }
                 }
             }
         }
     }
 
     post {
-        always {
-            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            archiveArtifacts artifacts: '**/dist/**', allowEmptyArchive: true
-        }
-
         success {
             echo 'Pipeline succeeded!'
         }
-
         failure {
             echo 'Pipeline failed!'
         }
