@@ -44,6 +44,13 @@ pipeline {
                         }
                     }
                 }
+                stage('Build Conseil Service') {
+                    steps {
+                        dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
+                            bat 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
             }
         }
 
@@ -56,7 +63,18 @@ pipeline {
             }
         }
 
-        
+        stage('Build Docker Images') {
+            steps {
+                bat 'docker-compose -f docker-compose.yaml build'
+            }
+        }
+
+        // Optionnel : déploiement local avec docker-compose up
+        stage('Run with Docker Compose') {
+            steps {
+                bat 'docker-compose -f docker-compose.yaml up -d'
+            }
+        }
     }
 
     post {
