@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UtilisateurService } from './utilisateur.service';
 
+import { getTestConfig } from '../testing/test-helpers';
 describe('UtilisateurService', () => {
   let service: UtilisateurService;
 

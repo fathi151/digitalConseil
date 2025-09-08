@@ -1,16 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminSetupComponent } from './admin-setup.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { getTestConfig } from '../testing/test-helpers';
 describe('AdminSetupComponent', () => {
   let component: AdminSetupComponent;
   let fixture: ComponentFixture<AdminSetupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminSetupComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule]
+      ...getTestConfig(),
+      declarations: [AdminSetupComponent]
     })
     .compileComponents();
 

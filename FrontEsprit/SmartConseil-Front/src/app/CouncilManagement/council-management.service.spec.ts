@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
 import { CouncilManagementService } from './council-management.service';
 import { Council, CouncilSession, Student, SpecialCase, Statistics } from './council-management.component';
 
+import { getTestConfig } from '../testing/test-helpers';
 describe('CouncilManagementService', () => {
   let service: CouncilManagementService;
   let httpMock: HttpTestingController;

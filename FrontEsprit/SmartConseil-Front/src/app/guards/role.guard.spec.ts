@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RoleGuard } from './role.guard';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { getTestConfig } from '../testing/test-helpers';
 describe('RoleGuard', () => {
   let guard: RoleGuard;
 

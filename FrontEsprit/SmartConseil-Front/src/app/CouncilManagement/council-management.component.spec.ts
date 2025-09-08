@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 import { CouncilManagementComponent } from './council-management.component';
 import { CouncilManagementService } from './council-management.service';
 
+import { getTestConfig } from '../testing/test-helpers';
 describe('CouncilManagementComponent', () => {
   let component: CouncilManagementComponent;
   let fixture: ComponentFixture<CouncilManagementComponent>;
@@ -12,9 +12,8 @@ describe('CouncilManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CouncilManagementComponent ],
-      imports: [ HttpClientTestingModule, FormsModule ],
-      providers: [ CouncilManagementService ]
+      ...getTestConfig(),
+      declarations: [ CouncilManagementComponent ]
     })
     .compileComponents();
 
