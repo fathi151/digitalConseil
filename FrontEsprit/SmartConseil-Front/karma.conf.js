@@ -26,16 +26,16 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'junit'],
     junitReporter: {
-      outputDir: 'test-results', // results will be saved as $outputDir/$browserName.xml
-      outputFile: 'test-results.xml', // if included, results will be saved as $outputDir/$browserName/$outputFile
-      useBrowserName: false // if true, results will be saved as $outputDir/$browserName.xml
+      outputDir: require('path').join(__dirname, 'test-results'),
+      outputFile: 'test-results.xml',
+      useBrowserName: false
     },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false,
+    singleRun: true,
     restartOnFileChange: true
   });
 };
