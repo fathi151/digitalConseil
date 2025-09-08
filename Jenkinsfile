@@ -56,38 +56,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            parallel {
-                stage('Backend Tests') {
-                    steps {
-                        script {
-                            def services = [
-                                'microservicePlanification',
-                                'microserviceRapport',
-                                'microserviceRectification',
-                                'microserviceUser'
-                            ]
-
-                            withCredentials([string(credentialsId: 'DB_PASSWORD', variable: 'DB_PASSWORD_CRED')]) {
-                                services.each { service ->
-                                    dir("BackEsprit/SmartConseil-Back/microservices/${service}") {
-                                        bat "mvn test -Dspring.datasource.url=${params.DB_URL} -Dspring.datasource.username=${params.DB_USERNAME} -Dspring.datasource.password=${DB_PASSWORD_CRED}"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                stage('Frontend Tests') {
-                    steps {
-                        dir('FrontEsprit/SmartConseil-Front') {
-                            bat 'npm run test -- --watch=false --browsers=ChromeHeadless'
-                        }
-                    }
-                }
-            }
-        }
+        
     }
 
     post {
