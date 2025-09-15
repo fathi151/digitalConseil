@@ -1,10 +1,9 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'DB_URL', defaultValue: 'jdbc:mysql://localhost:3306/conseil?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true', description: 'Database URL for testing')
-        string(name: 'DB_USERNAME', defaultValue: 'root', description: 'Database username for testing')
-        password(name: 'DB_PASSWORD', defaultValue: '', description: 'Database password for testing')
+    environment {
+        // Jenkins credential ID = sonarqube (Secret Text containing your token)
+        SONAR_TOKEN = credentials('sonarqube')
     }
 
     stages {
@@ -14,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('Build Backend Services') {
+        stage('Build Microservices') {
             parallel {
                 stage('Build Planification Service') {
                     steps {
@@ -56,21 +55,24 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
-                    script {
-                        def microservices = [
-                            [dir: 'microservicePlanification', key: 'PlanificationService'],
-                            [dir: 'microserviceRapport', key: 'RapportService'],
-                            [dir: 'microserviceRectification', key: 'RectificationService'],
-                            [dir: 'microserviceUser', key: 'UserService'],
-                            [dir: 'microserviceConseil', key: 'ConseilService']
-                        ]
+                script {
+                    def microservices = [
+                        "microservicePlanification",
+                        "microserviceRapport",
+                        "microserviceRectification",
+                        "microserviceUser",
+                        "microserviceConseil"
+                    ]
 
-                        microservices.each { svc ->
-                            dir("BackEsprit/SmartConseil-Back/microservices/${svc.dir}") {
-                                withSonarQubeEnv('MySonarQube') {
-                                    bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN% -Dsonar.projectKey=${svc.key}"
-                                }
+                    microservices.each { svc ->
+                        dir("BackEsprit/SmartConseil-Back/microservices/${svc}") {
+                            withSonarQubeEnv('sonarqube') {
+                                bat """
+                                    mvn sonar:sonar ^
+                                      -Dsonar.projectKey=${svc} ^
+                                      -Dsonar.host.url=%SONAR_HOST_URL% ^
+                                      -Dsonar.login=%SONAR_TOKEN%
+                                """
                             }
                         }
                     }
@@ -102,10 +104,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline succeeded!'
+            echo '✅ Pipeline succeeded!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo '❌ Pipeline failed!'
         }
     }
 }
