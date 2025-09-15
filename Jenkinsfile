@@ -7,10 +7,6 @@ pipeline {
         password(name: 'DB_PASSWORD', defaultValue: '', description: 'Database password for testing')
     }
 
-    environment {
-        SONAR_TOKEN = credentials('sonarqube') // token enregistré dans Jenkins
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -60,30 +56,23 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                // Analyse chaque microservice
-                dir('BackEsprit/SmartConseil-Back/microservices/microservicePlanification') {
-                    withSonarQubeEnv('MySonarQube') {
-                        bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    }
-                }
-                dir('BackEsprit/SmartConseil-Back/microservices/microserviceRapport') {
-                    withSonarQubeEnv('MySonarQube') {
-                        bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    }
-                }
-                dir('BackEsprit/SmartConseil-Back/microservices/microserviceRectification') {
-                    withSonarQubeEnv('MySonarQube') {
-                        bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    }
-                }
-                dir('BackEsprit/SmartConseil-Back/microservices/microserviceUser') {
-                    withSonarQubeEnv('MySonarQube') {
-                        bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
-                    }
-                }
-                dir('BackEsprit/SmartConseil-Back/microservices/microserviceConseil') {
-                    withSonarQubeEnv('MySonarQube') {
-                        bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%"
+                // SonarQube token injection
+                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_TOKEN')]) {
+
+                    def microservices = [
+                        [dir: 'microservicePlanification', key: 'PlanificationService'],
+                        [dir: 'microserviceRapport', key: 'RapportService'],
+                        [dir: 'microserviceRectification', key: 'RectificationService'],
+                        [dir: 'microserviceUser', key: 'UserService'],
+                        [dir: 'microserviceConseil', key: 'ConseilService']
+                    ]
+
+                    microservices.each { svc ->
+                        dir("BackEsprit/SmartConseil-Back/microservices/${svc.dir}") {
+                            withSonarQubeEnv('MySonarQube') {
+                                bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN% -Dsonar.projectKey=${svc.key}"
+                            }
+                        }
                     }
                 }
             }
