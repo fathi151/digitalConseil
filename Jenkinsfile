@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // Jenkins credential ID = sonarqube (Secret Text containing your token)
-        SONAR_TOKEN = credentials('sonarqube')
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -71,7 +66,7 @@ pipeline {
                                     mvn sonar:sonar ^
                                       -Dsonar.projectKey=${svc} ^
                                       -Dsonar.host.url=%SONAR_HOST_URL% ^
-                                      -Dsonar.login=%SONAR_TOKEN%
+                                      -Dsonar.login=%SONAR_AUTH_TOKEN%
                                 """
                             }
                         }
