@@ -1,0 +1,172 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Import common styles */
+@import './app/shared/styles/common.css';
+
+/* Global Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
+  overflow-x: hidden;
+}
+
+/* Remove any default margins and paddings that might cause white gaps */
+.container-fluid,
+.container,
+.row,
+.col {
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure smooth transitions */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Fix any potential white gaps in layout */
+.page-wrapper,
+.body-wrapper,
+.main-content {
+  margin: 0;
+  padding: 0;
+}
+
+/* Override Bootstrap defaults that might cause issues */
+.navbar {
+  margin-bottom: 0 !important;
+}
+
+/* Ensure images don't cause layout issues */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Override for profile pictures */
+.profile-picture-img {
+  max-width: none !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* FIXED & ENHANCED SIDEBAR */
+.left-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #c51126 0%, #d6555c 50%, #992020 100%);
+  z-index: 1040;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+/* ENSURE SIDEBAR IS AT TOP OF PAGE */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Avoid overlap with fixed navbar */
+.body-wrapper {
+  margin-left: 280px;
+  padding-top: 80px;
+  flex-grow: 1;
+}
+
+@media (max-width: 1199.98px) {
+  .left-sidebar {
+    transform: translateX(-100%);
+  }
+  .left-sidebar.show {
+    transform: translateX(0);
+  }
+  .body-wrapper {
+    margin-left: 0;
+  }
+}
+
+/* PROFILE PICTURE IN SIDEBAR */
+.user-avatar app-profile-picture {
+  display: block;
+  width: 80px;
+  height: 80px;
+}
+
+.user-avatar app-profile-picture .profile-picture-container {
+  width: 80px !important;
+  height: 80px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.user-avatar app-profile-picture .profile-picture-img {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.user-avatar app-profile-picture .profile-picture-img:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* PROFILE PICTURE IN NAVBAR */
+.nav-icon-hover.profile-picture-nav {
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.nav-icon-hover.profile-picture-nav app-profile-picture .profile-picture-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.nav-icon-hover.profile-picture-nav app-profile-picture .profile-picture-img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: none;
+}

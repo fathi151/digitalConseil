@@ -1,0 +1,74 @@
+<p>admin-setup works!</p>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card mt-5">
+        <div class="card-header text-center">
+          <h3>Configuration Initiale</h3>
+          <p class="text-muted">Créer les premiers utilisateurs du système</p>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h5>Étape 1: Créer un administrateur</h5>
+            <p class="text-muted">Créez le premier utilisateur chef de département</p>
+            <button 
+              class="btn btn-primary btn-lg" 
+              (click)="createAdmin()" 
+              [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              Créer Admin
+            </button>
+          </div>
+
+          <hr>
+
+          <div class="text-center mb-4">
+            <h5>Étape 2: Créer des utilisateurs de test</h5>
+            <p class="text-muted">Créez des utilisateurs de test pour les différents rôles</p>
+            <button 
+              class="btn btn-success btn-lg" 
+              (click)="createTestUsers()" 
+              [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              Créer Utilisateurs Test
+            </button>
+          </div>
+
+          <hr>
+
+          <div class="text-center">
+            <button 
+              class="btn btn-outline-primary" 
+              (click)="goToLogin()">
+              Aller à la connexion
+            </button>
+          </div>
+
+          <div *ngIf="message" class="alert alert-info mt-4" style="white-space: pre-line;">
+            {{ message }}
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header">
+          <h5>Informations importantes</h5>
+        </div>
+        <div class="card-body">
+          <h6>Comptes créés:</h6>
+          <ul>
+            <li><strong>Admin:</strong> admin&#64;smartconseil.com / admin123</li>
+            <li><strong>Enseignant:</strong> enseignant&#64;test.com / password123</li>
+            <li><strong>Chef Département:</strong> chef&#64;test.com / password123</li>
+          </ul>
+          
+          <h6 class="mt-3">Rôles et accès:</h6>
+          <ul>
+            <li><strong>enseignant:</strong> Accès à la rectification des notes</li>
+            <li><strong>chef departement:</strong> Gestion des utilisateurs, planification, rapports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

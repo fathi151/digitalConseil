@@ -1,0 +1,95 @@
+<div class="data-filter-container mb-3">
+  <!-- Search Bar -->
+  <div class="row mb-3">
+    <div class="col-md-8">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="ti ti-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Rechercher..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()">
+        <button
+          *ngIf="searchTerm"
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="searchTerm = ''; onSearchChange()">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex gap-2">
+        <button
+          *ngIf="config.filterFields && config.filterFields.length > 0"
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="toggleAdvancedFilters()">
+          <i class="ti ti-filter"></i>
+          Filtres
+          <i class="ti" [ngClass]="showAdvancedFilters ? 'ti-chevron-up' : 'ti-chevron-down'"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="clearFilters()">
+          <i class="ti ti-refresh"></i>
+          Effacer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advanced Filters -->
+  <div *ngIf="showAdvancedFilters && config.filterFields && config.filterFields.length > 0" 
+       class="card border-primary">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">
+        <i class="ti ti-filter me-2"></i>
+        Filtres Avancés
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-3" *ngFor="let field of config.filterFields">
+          <label [for]="'filter-' + field.key" class="form-label">{{ field.label }}</label>
+          
+          <!-- Select Filter -->
+          <select
+            *ngIf="field.type === 'select'"
+            [id]="'filter-' + field.key"
+            class="form-select"
+            [(ngModel)]="filters[field.key]"
+            (change)="onFilterChange()">
+            <option value="">Tous</option>
+            <option *ngFor="let option of getFilterOptions(field)" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+
+          <!-- Text Filter -->
+          <input
+            *ngIf="field.type === 'text'"
+            type="text"
+            [id]="'filter-' + field.key"
+            class="form-control"
+            [(ngModel)]="filters[field.key]"
+            (input)="onFilterChange()"
+            [placeholder]="'Filtrer par ' + field.label.toLowerCase()">
+
+          <!-- Date Filter -->
+          <input
+            *ngIf="field.type === 'date'"
+            type="date"
+            [id]="'filter-' + field.key"
+            class="form-control"
+            [(ngModel)]="filters[field.key]"
+            (change)="onFilterChange()">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,376 @@
+<app-layout>
+
+      <!-- Success/Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="ti ti-check-circle me-2"></i>
+        {{ successMessage }}
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="ti ti-alert-circle me-2"></i>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Profile Card -->
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h5 class="card-title mb-0">
+                <i class="ti ti-user-circle me-2"></i>
+                Informations du Profil
+              </h5>
+            </div>
+            <div class="card-body">
+              <!-- Loading Spinner -->
+              <div *ngIf="isLoading" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+
+              <!-- Profile Form -->
+              <form *ngIf="!isLoading" (ngSubmit)="saveProfile()" #profileFormRef="ngForm">
+
+                <!-- Profile Picture Section -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <div class="card bg-light">
+                      <div class="card-body text-center">
+                        <h6 class="card-title">
+                          <i class="ti ti-camera me-2"></i>
+                          Photo de Profil
+                        </h6>
+
+                        <!-- Current Profile Picture -->
+                        <div class="mb-3">
+                          <app-profile-picture
+                            [email]="currentUser?.email || ''"
+                            size="large"
+                            [showBorder]="true"
+                            alt="Photo de profil actuelle">
+                          </app-profile-picture>
+                        </div>
+
+                        <!-- Profile Picture Upload -->
+                        <div *ngIf="isEditing" class="profile-picture-upload">
+                          <!-- File Input -->
+                          <div class="mb-3">
+                            <input
+                              type="file"
+                              class="form-control"
+                              id="profilePictureInput"
+                              accept="image/*"
+                              (change)="onFileSelected($event)">
+                            <small class="text-muted">
+                              Formats acceptés: JPG, PNG, GIF (max 5MB)
+                            </small>
+                          </div>
+
+                          <!-- Preview and Upload Controls -->
+                          <div *ngIf="selectedFile" class="preview-section">
+                            <div class="mb-3">
+                              <img
+                                *ngIf="profilePicturePreview"
+                                [src]="profilePicturePreview"
+                                alt="Aperçu"
+                                class="img-thumbnail"
+                                style="max-width: 150px; max-height: 150px;">
+                            </div>
+
+                            <div class="d-flex gap-2 justify-content-center">
+                              <button
+                                type="button"
+                                class="btn btn-success btn-sm"
+                                [disabled]="isUploadingPicture"
+                                (click)="uploadProfilePicture()">
+                                <span *ngIf="isUploadingPicture" class="spinner-border spinner-border-sm me-1"></span>
+                                <i *ngIf="!isUploadingPicture" class="ti ti-upload me-1"></i>
+                                {{ isUploadingPicture ? 'Téléchargement...' : 'Télécharger' }}
+                              </button>
+
+                              <button
+                                type="button"
+                                class="btn btn-secondary btn-sm"
+                                [disabled]="isUploadingPicture"
+                                (click)="cancelProfilePictureUpload()">
+                                <i class="ti ti-x me-1"></i>
+                                Annuler
+                              </button>
+                            </div>
+                          </div>
+
+                          <!-- Profile Picture Error -->
+                          <div *ngIf="profilePictureError" class="alert alert-danger alert-sm mt-2">
+                            <i class="ti ti-alert-circle me-1"></i>
+                            {{ profilePictureError }}
+                          </div>
+                        </div>
+
+                        <small class="text-muted" *ngIf="!isEditing">
+                          Cliquez sur "Modifier" pour changer votre photo de profil
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- Username -->
+                  <div class="col-md-6 mb-3">
+                    <label for="username" class="form-label">
+                      <i class="ti ti-user me-1"></i>
+                      Nom d'utilisateur
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      name="username"
+                      [(ngModel)]="profileData.username"
+                      [readonly]="!isEditing"
+                      required>
+                    <small class="text-muted" *ngIf="!isEditing">Cliquez sur "Modifier" pour éditer</small>
+                    <small class="text-muted" *ngIf="isEditing">Vous pouvez modifier votre nom d'utilisateur</small>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">
+                      <i class="ti ti-mail me-1"></i>
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      [(ngModel)]="profileData.email"
+                      readonly
+                      required>
+                    <small class="text-muted">L'email ne peut pas être modifié</small>
+                  </div>
+
+                  <!-- Role -->
+                  <div class="col-md-6 mb-3">
+                    <label for="role" class="form-label">
+                      <i class="ti ti-shield me-1"></i>
+                      Rôle
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="role"
+                      [value]="currentUser?.role"
+                      readonly>
+                    <small class="text-muted">Le rôle ne peut pas être modifié</small>
+                  </div>
+
+                  <!-- Poste -->
+                  <div class="col-md-6 mb-3">
+                    <label for="poste" class="form-label">
+                      <i class="ti ti-briefcase me-1"></i>
+                      Poste
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="poste"
+                      name="poste"
+                      [(ngModel)]="profileData.poste"
+                      readonly
+                      required>
+                    <small class="text-muted">Le poste ne peut pas être modifié</small>
+                  </div>
+
+                  <!-- Secteur -->
+                  <div class="col-md-6 mb-3">
+                    <label for="secteur" class="form-label">
+                      <i class="ti ti-building me-1"></i>
+                      Secteur
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="secteur"
+                      name="secteur"
+                      [(ngModel)]="profileData.secteur"
+                      readonly
+                      required>
+                    <small class="text-muted">Le secteur ne peut pas être modifié</small>
+                  </div>
+
+                  <!-- Phone Number -->
+                  <div class="col-md-6 mb-3">
+                    <label for="phoneNumber" class="form-label">
+                      <i class="ti ti-phone me-1"></i>
+                      Numéro de téléphone
+                    </label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      [(ngModel)]="profileData.phoneNumber"
+                      [readonly]="!isEditing"
+                      placeholder="+216 XX XXX XXX"
+                      required>
+                    <small class="text-muted" *ngIf="!isEditing">Cliquez sur "Modifier" pour éditer</small>
+                    <small class="text-muted" *ngIf="isEditing">Vous pouvez modifier votre numéro de téléphone</small>
+                  </div>
+
+                  <!-- Profile Edit Buttons -->
+                  <div class="col-12 mb-4">
+                    <div class="d-flex gap-2">
+                      <button
+                        *ngIf="!isEditing"
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="toggleEdit()">
+                        <i class="ti ti-edit me-1"></i>
+                        Modifier le profil
+                      </button>
+
+                      <button
+                        *ngIf="isEditing"
+                        type="submit"
+                        class="btn btn-success"
+                        [disabled]="!profileFormRef.form.valid || isLoading">
+                        <i class="ti ti-check me-1"></i>
+                        <span *ngIf="!isLoading">Sauvegarder</span>
+                        <span *ngIf="isLoading">Sauvegarde...</span>
+                      </button>
+
+                      <button
+                        *ngIf="isEditing"
+                        type="button"
+                        class="btn btn-secondary"
+                        (click)="toggleEdit()">
+                        <i class="ti ti-x me-1"></i>
+                        Annuler
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Password Change Section -->
+                  <div class="col-12 mb-3">
+                    <div class="card border-primary">
+                      <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0">
+                          <i class="ti ti-lock me-1"></i>
+                          Changer le mot de passe
+                        </h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <!-- Current Password -->
+                          <div class="col-md-4 mb-3">
+                            <label for="currentPassword" class="form-label">Mot de passe actuel</label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="currentPassword"
+                              name="currentPassword"
+                              [(ngModel)]="passwordData.currentPassword"
+                              [disabled]="!isChangingPassword"
+                              placeholder="Entrez votre mot de passe actuel">
+                          </div>
+
+                          <!-- New Password -->
+                          <div class="col-md-4 mb-3">
+                            <label for="newPassword" class="form-label">Nouveau mot de passe</label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="newPassword"
+                              name="newPassword"
+                              [(ngModel)]="passwordData.newPassword"
+                              [disabled]="!isChangingPassword"
+                              placeholder="Entrez le nouveau mot de passe">
+                          </div>
+
+                          <!-- Confirm Password -->
+                          <div class="col-md-4 mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="confirmPassword"
+                              name="confirmPassword"
+                              [(ngModel)]="passwordData.confirmPassword"
+                              [disabled]="!isChangingPassword"
+                              placeholder="Confirmez le nouveau mot de passe">
+                          </div>
+                        </div>
+
+                        <!-- Password validation messages -->
+                        <div *ngIf="passwordData.newPassword && passwordData.confirmPassword && passwordData.newPassword !== passwordData.confirmPassword"
+                             class="alert alert-danger small">
+                          Les mots de passe ne correspondent pas.
+                        </div>
+
+                        <!-- Password change buttons -->
+                        <div class="d-flex gap-2">
+                          <button
+                            type="button"
+                            class="btn btn-outline-info btn-sm"
+                            (click)="testBackend()">
+                            <i class="ti ti-server me-1"></i>
+                            Test Backend
+                          </button>
+
+                          <button
+                            *ngIf="!isChangingPassword"
+                            type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            (click)="togglePasswordChange()">
+                            <i class="ti ti-edit me-1"></i>
+                            Modifier le mot de passe
+                          </button>
+
+                          <button
+                            type="button"
+                            class="btn btn-outline-warning btn-sm"
+                            (click)="usePasswordReset()">
+                            <i class="ti ti-mail me-1"></i>
+                            Réinitialiser par email
+                          </button>
+
+                          <button
+                            *ngIf="isChangingPassword"
+                            type="button"
+                            class="btn btn-secondary btn-sm"
+                            (click)="cancelPasswordChange()">
+                            <i class="ti ti-x me-1"></i>
+                            Annuler
+                          </button>
+
+                          <button
+                            *ngIf="isChangingPassword"
+                            type="button"
+                            class="btn btn-success btn-sm"
+                            [disabled]="!isPasswordValid() || isLoading"
+                            (click)="changePassword()">
+                            <i class="ti ti-check me-1"></i>
+                            <span *ngIf="!isLoading">Changer le mot de passe</span>
+                            <span *ngIf="isLoading">Changement...</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-start mt-4">
+                  <button type="button" class="btn btn-secondary" (click)="goBack()">
+                    <i class="ti ti-arrow-left me-1"></i>
+                    Retour
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</app-layout>

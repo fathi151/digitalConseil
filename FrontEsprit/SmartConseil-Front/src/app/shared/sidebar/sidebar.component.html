@@ -1,0 +1,51 @@
+<aside class="left-sidebar">
+  <!-- Logo and Brand -->
+  <div class="brand-logo d-flex align-items-center justify-content-between">
+    <div class="login-header">
+      <img src="assets/images/logos/esprit.png"
+           alt="ESPRIT Logo"
+           class="sidebar-logo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+      <div class="logo-fallback" style="display: none; color: white; font-weight: bold; font-size: 1.2rem;">
+        ESPRIT
+      </div>
+    </div>
+    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse" (click)="toggleSidebar()">
+      <i class="ti ti-x fs-8"></i>
+    </div>
+  </div>
+
+
+  <!-- Sidebar navigation-->
+  <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+      <ul id="sidebarnav">
+        <li class="nav-small-cap">
+          <span class="hide-menu">Navigation</span>
+        </li>
+
+        <!-- Dynamic Navigation Items -->
+        <li class="sidebar-item" *ngFor="let item of navigationItems">
+          <a class="sidebar-link" 
+             [class.active]="isActiveRoute(item.route || '')"
+             (click)="item.route ? navigateTo(item.route) : executeAction(item.action)"
+             href="javascript:void(0)" 
+             aria-expanded="false">
+            <i [class]="item.icon"></i>
+            <span class="hide-menu">{{ item.title }}</span>
+          </a>
+        </li>
+
+        <!-- Logout Link -->
+        <li class="sidebar-item">
+          <a class="sidebar-link"
+             (click)="logout(); $event.preventDefault()"
+             href="javascript:void(0)"
+             aria-expanded="false">
+            <i class="ti ti-logout"></i>
+            <span class="hide-menu">Déconnexion</span>
+          </a>
+        </li>
+      </ul>
+  </nav>
+  <!-- End Sidebar navigation -->
+</aside>

@@ -1,0 +1,98 @@
+<app-layout>
+  <div class="salle-content">
+    <div class="header-container">
+            <div class="header-text">
+              <h2>Gestion des Salles</h2>
+              <p>Module 3 - Gestion des Disponibilite de Salles</p>
+            </div>
+           
+          </div>
+
+         <div class="row">
+  <div class="form-container">
+    <form [formGroup]="SalleForm" (ngSubmit)="onSubmit()">
+      <h2>Informations du Salle</h2>
+      <p class="subtitle">Remplissez les détails du nouveau Salle de classe</p>
+
+      <div class="row">
+        <!-- Nom Salle -->
+        <div class="field">
+          <label>Nom Salle</label>
+          <input type="text" placeholder="ajouter le nom de la salle" formControlName="nomSalle">
+          <div class="error" *ngIf="SalleForm.get('nomSalle')?.touched && SalleForm.get('nomSalle')?.invalid">
+            Le nom de la salle est requis.
+          </div>
+        </div>
+
+        <!-- Étage -->
+        <div class="field">
+          <label>Étage</label>
+          <select formControlName="etage">
+            <option value="">-- Sélectionner un étage --</option>
+            <option value="Rez-de-chaussée">Rez-de-chaussée</option>
+            <option value="1er étage">1er étage</option>
+            <option value="2ème étage">2ème étage</option>
+            <option value="4ème étage">4ème étage</option>
+          </select>
+          <div class="error" *ngIf="SalleForm.get('etage')?.touched && SalleForm.get('etage')?.invalid">
+            L'étage est requis.
+          </div>
+        </div>
+      </div> <!-- fin .row -->
+
+      <div class="row">
+        <!-- Capacité -->
+        <div class="field">
+          <label>Capacité</label>
+          <select formControlName="capacite">
+            <option value="">-- Sélectionner la capacité --</option>
+            <option *ngFor="let cap of capacites" [value]="cap">{{ cap }}</option>
+          </select>
+          <div class="error" *ngIf="SalleForm.get('capacite')?.touched && SalleForm.get('capacite')?.invalid">
+            La capacité est requise.
+          </div>
+        </div>
+
+        <!-- Équipement -->
+        <div class="field">
+          <label>Équipement</label>
+          <input type="text" placeholder="Sélectionner les équipements" formControlName="equipement">
+          <div class="error" *ngIf="SalleForm.get('equipement')?.touched && SalleForm.get('equipement')?.invalid">
+            L'équipement est requis.
+          </div>
+        </div>
+      </div> <!-- fin .row -->
+
+      <!-- Description -->
+      <div class="field">
+        <label>Description</label>
+        <input type="text" placeholder="Donner une description" formControlName="description">
+        <div class="error" *ngIf="SalleForm.get('description')?.touched && SalleForm.get('description')?.errors">
+          <span *ngIf="SalleForm.get('description')?.errors?.['required']">
+            La description est requise.
+          </span>
+          <span *ngIf="SalleForm.get('description')?.errors?.['minlength']">
+            Minimum 10 caractères requis.
+          </span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="primary"><span>📅</span> Créer La Salle</button>
+        <button type="button" class="secondary">Annuler</button>
+      </div>
+    </form>
+
+    <!-- Footer proprement placé -->
+    <div class="py-6 px-6 text-center">
+      <p class="mb-0 fs-4">
+        Design and Developed by <a href="#" class="pe-1 text-primary text-decoration-underline">Wrappixel.com</a>
+        Distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+      </p>
+    </div>
+  </div> <!-- fin .form-container -->
+</div> <!-- fin .row -->
+
+
+  </div> <!-- Fermeture de salle-content -->
+</app-layout>

@@ -1,0 +1,280 @@
+<app-layout>
+  <div class="row">
+    <div class="col-12">
+      <div class="welcome-header mb-4">
+        <h1><i class="ti ti-clipboard-check me-2"></i>Gestion des Demandes de Rectification</h1>
+        <p>Approuvez ou refusez les demandes de rectification de notes</p>
+      </div>
+      
+      <!-- Success/Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ successMessage }}
+        <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+      </div>
+      
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+      </div>
+
+      <!-- Pending Requests -->
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Demandes en Attente</h5>
+          <span class="badge bg-primary">{{ pendingRequests.length }}</span>
+        </div>
+        <div class="card-body">
+          <!-- Filter Component for Pending Requests -->
+          <app-data-filter
+            *ngIf="pendingRequests.length > 0"
+            [config]="rectificationFilterConfig"
+            [data]="pendingRequests"
+            (filterChange)="onPendingFilterChange($event)">
+          </app-data-filter>
+
+          <div *ngIf="pendingRequests.length === 0" class="text-muted text-center py-4">
+            <i class="fas fa-inbox fa-3x mb-3"></i>
+            <p>Aucune demande en attente de traitement.</p>
+          </div>
+          <div *ngIf="filteredPendingRequests.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Enseignant</th>
+                  <th>Étudiant</th>
+                  <th>Classe</th>
+                  <th>Option</th>
+                  <th>Notes</th>
+                  <th>Différence</th>
+                  <th>Justification</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let request of filteredPendingRequests">
+                  <td>
+                    <strong>{{ request.enseignantUsername }}</strong>
+                  </td>
+                  <td>
+                    {{ request.etudiantPrenom }} {{ request.etudiantNom }}
+                  </td>
+                  <td>{{ request.classe }}</td>
+                  <td>
+                    <span class="badge bg-secondary">{{ request.option }}</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">{{ request.ancienneNote }}</span>
+                      <i class="fas fa-arrow-right text-muted me-2"></i>
+                      <span>{{ request.nouvelleNote }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span [ngClass]="getNoteDifferenceClass(calculateNoteDifference(request.ancienneNote, request.nouvelleNote))">
+                      {{ getNoteDifferenceIcon(calculateNoteDifference(request.ancienneNote, request.nouvelleNote)) }}
+                      {{ formatNoteDifference(calculateNoteDifference(request.ancienneNote, request.nouvelleNote)) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="text-truncate d-inline-block" style="max-width: 200px;" 
+                          [title]="request.justification">
+                      {{ request.justification }}
+                    </span>
+                  </td>
+                  <td>{{ request.dateDemande | date:'short' }}</td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button 
+                        type="button" 
+                        class="btn btn-success btn-sm" 
+                        (click)="openProcessModal(request, 'ACCEPTEE')"
+                        [disabled]="isProcessing">
+                        <i class="fas fa-check"></i> Accepter
+                      </button>
+                      <button 
+                        type="button" 
+                        class="btn btn-danger btn-sm" 
+                        (click)="openProcessModal(request, 'REFUSEE')"
+                        [disabled]="isProcessing">
+                        <i class="fas fa-times"></i> Refuser
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Processed History -->
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Historique des Demandes Traitées</h5>
+          <span class="badge bg-secondary">{{ processedHistory.length }}</span>
+        </div>
+        <div class="card-body">
+          <!-- Filter Component for History -->
+          <app-data-filter
+            *ngIf="processedHistory.length > 0"
+            [config]="rectificationFilterConfig"
+            [data]="processedHistory"
+            (filterChange)="onHistoryFilterChange($event)">
+          </app-data-filter>
+
+          <div *ngIf="processedHistory.length === 0" class="text-muted text-center py-4">
+            <i class="fas fa-history fa-3x mb-3"></i>
+            <p>Aucun historique de traitement disponible.</p>
+          </div>
+          <div *ngIf="filteredProcessedHistory.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Enseignant</th>
+                  <th>Étudiant</th>
+                  <th>Classe</th>
+                  <th>Option</th>
+                  <th>Notes</th>
+                  <th>Statut</th>
+                  <th>Date Demande</th>
+                  <th>Date Traitement</th>
+                  <th>Motif Refus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of filteredProcessedHistory">
+                  <td>{{ item.enseignantUsername }}</td>
+                  <td>{{ item.etudiantPrenom }} {{ item.etudiantNom }}</td>
+                  <td>{{ item.classe }}</td>
+                  <td>
+                    <span class="badge bg-secondary">{{ item.option }}</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">{{ item.ancienneNote }}</span>
+                      <i class="fas fa-arrow-right text-muted me-2"></i>
+                      <span>{{ item.nouvelleNote }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusBadgeClass(item.status)">
+                      {{ getStatusText(item.status) }}
+                    </span>
+                  </td>
+                  <td>{{ item.dateDemande | date:'short' }}</td>
+                  <td>{{ item.dateTraitement | date:'short' }}</td>
+                  <td>
+                    <span *ngIf="item.motifRefus" class="text-danger">{{ item.motifRefus }}</span>
+                    <span *ngIf="!item.motifRefus" class="text-muted">-</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Process Request Modal -->
+<div class="modal" [class.show]="showProcessModal" [style.display]="showProcessModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ processAction === 'ACCEPTEE' ? 'Accepter' : 'Refuser' }} la Demande
+        </h5>
+        <button type="button" class="btn-close" (click)="closeProcessModal()"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedRequest">
+        <!-- Request Details -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h6>Détails de la Demande</h6>
+            <table class="table table-sm">
+              <tr>
+                <td><strong>Enseignant:</strong></td>
+                <td>{{ selectedRequest.enseignantUsername }}</td>
+              </tr>
+              <tr>
+                <td><strong>Étudiant:</strong></td>
+                <td>{{ selectedRequest.etudiantPrenom }} {{ selectedRequest.etudiantNom }}</td>
+              </tr>
+              <tr>
+                <td><strong>Classe:</strong></td>
+                <td>{{ selectedRequest.classe }}</td>
+              </tr>
+              <tr>
+                <td><strong>Option:</strong></td>
+                <td>{{ selectedRequest.option }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <h6>Modification de Note</h6>
+            <div class="d-flex align-items-center justify-content-center py-3">
+              <div class="text-center">
+                <div class="fs-4">{{ selectedRequest.ancienneNote }}</div>
+                <small class="text-muted">Ancienne</small>
+              </div>
+              <div class="mx-4">
+                <i class="fas fa-arrow-right fa-2x text-primary"></i>
+              </div>
+              <div class="text-center">
+                <div class="fs-4">{{ selectedRequest.nouvelleNote }}</div>
+                <small class="text-muted">Nouvelle</small>
+              </div>
+            </div>
+            <div class="text-center">
+              <span [ngClass]="getNoteDifferenceClass(calculateNoteDifference(selectedRequest.ancienneNote, selectedRequest.nouvelleNote))">
+                Différence: {{ formatNoteDifference(calculateNoteDifference(selectedRequest.ancienneNote, selectedRequest.nouvelleNote)) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <h6>Justification</h6>
+          <div class="border rounded p-3 bg-light">
+            {{ selectedRequest.justification }}
+          </div>
+        </div>
+
+        <!-- Refusal Reason (only for rejection) -->
+        <div *ngIf="processAction === 'REFUSEE'" class="mb-3">
+          <label for="refusalReason" class="form-label">
+            <strong>Motif de Refus *</strong>
+          </label>
+          <textarea 
+            class="form-control" 
+            id="refusalReason" 
+            [(ngModel)]="refusalReason" 
+            rows="3" 
+            placeholder="Veuillez préciser le motif du refus..."
+            required></textarea>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeProcessModal()">
+          Annuler
+        </button>
+        <button 
+          type="button" 
+          [class]="processAction === 'ACCEPTEE' ? 'btn btn-success' : 'btn btn-danger'" 
+          (click)="confirmProcess()" 
+          [disabled]="isProcessing || (processAction === 'REFUSEE' && !refusalReason.trim())">
+          <span *ngIf="isProcessing" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isProcessing ? 'Traitement...' : (processAction === 'ACCEPTEE' ? 'Accepter' : 'Refuser') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showProcessModal" class="modal-backdrop fade show"></div>
+
+</app-layout>

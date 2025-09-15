@@ -1,0 +1,18 @@
+<div class="profile-picture-container" [ngClass]="getSizeClass()">
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="profile-picture-loading">
+    <div class="spinner-border spinner-border-sm text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Profile picture -->
+  <img
+    *ngIf="!isLoading"
+    [src]="profilePicture"
+    [alt]="alt"
+    [ngClass]="getBorderClass()"
+    class="profile-picture-img"
+    (error)="onImageError()"
+    loading="lazy">
+</div>

@@ -1,0 +1,272 @@
+/* Enhanced Navbar Styles */
+.app-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 280px; /* Adjust based on sidebar width */
+  z-index: 1030;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 123, 255, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(15px);
+  height: 100px;
+}
+
+.navbar {
+  padding: 1.5rem 2rem;
+  min-height: 100px;
+  background: transparent;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-icon-hover {
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  color: #495057;
+  font-size: 1.2rem;
+}
+
+/* Special styling for profile picture in navbar */
+.nav-icon-hover.profile-picture-nav {
+  width: 44px !important;
+  height: 44px !important;
+  padding: 2px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 2px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+
+.nav-icon-hover:hover {
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 123, 255, 0.05) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+  color: #007bff;
+}
+
+/* Profile picture hover effect */
+.nav-icon-hover.profile-picture-nav:hover {
+  transform: translateY(-1px) scale(1.05);
+  border-color: rgba(0, 123, 255, 0.6);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.25);
+  background: transparent;
+}
+
+/* Active state for profile picture */
+.nav-icon-hover.profile-picture-nav:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Focus state for accessibility */
+.nav-icon-hover.profile-picture-nav:focus {
+  outline: none;
+  border-color: rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Force profile picture component to fit perfectly in navbar */
+.nav-icon-hover.profile-picture-nav app-profile-picture {
+  display: block !important;
+  width: 40px !important;
+  height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.nav-icon-hover.profile-picture-nav app-profile-picture .profile-picture-container {
+  width: 40px !important;
+  height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.nav-icon-hover.profile-picture-nav app-profile-picture .profile-picture-img {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Override any Bootstrap classes */
+.nav-icon-hover.profile-picture-nav app-profile-picture .rounded-circle {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.nav-icon-hover.profile-picture-nav app-profile-picture .profile-picture-border {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Override loading state */
+.nav-icon-hover.profile-picture-nav app-profile-picture .profile-picture-loading {
+  width: 40px !important;
+  height: 40px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Complete CSS reset for navbar profile picture */
+.nav-icon-hover.profile-picture-nav * {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.nav-icon-hover.profile-picture-nav *:not(.profile-picture-img) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.notification {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid white;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  min-width: 280px;
+  padding: 1rem 0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  backdrop-filter: blur(10px);
+  margin-top: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin: 0.25rem 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 123, 255, 0.05) 100%);
+  transform: translateX(5px);
+  color: #007bff;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1199.98px) {
+  .app-header {
+    left: 0;
+  }
+}
+
+/* Sidebar collapsed state */
+.sidebar-collapsed .app-header {
+  left: 80px;
+}
+
+@media (max-width: 1199.98px) {
+  .sidebar-collapsed .app-header {
+    left: 0;
+  }
+}
+
+/* Sidebar collapsed state */
+.sidebar-collapsed .app-header {
+  left: 80px;
+}
+
+@media (max-width: 1199.98px) {
+  .sidebar-collapsed .app-header {
+    left: 0;
+  }
+}
+
+/* Center Welcome Message Styles */
+.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.navbar-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-welcome-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 0.25rem;
+}
+
+.navbar-welcome-subtitle {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #000000;
+  line-height: 1.3;
+  max-width: 400px;
+}
+
+/* Responsive styles for welcome message */
+@media (max-width: 1399.98px) {
+  .navbar-welcome-text {
+    font-size: 1.2rem;
+  }
+
+  .navbar-welcome-subtitle {
+    font-size: 0.8rem;
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .navbar-center {
+    display: none !important;
+  }
+}

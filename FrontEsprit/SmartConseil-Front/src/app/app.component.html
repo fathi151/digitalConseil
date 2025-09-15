@@ -1,0 +1,15 @@
+<!-- Backend Status Indicator 
+<div class="backend-status" *ngIf="showStatusIndicator">
+  <div class="status-item" [class.status-success]="userServiceStatus" [class.status-error]="!userServiceStatus">
+    <span>User Service</span>
+  </div>
+  <div class="status-item" [class.status-success]="rectificationServiceStatus" [class.status-error]="!rectificationServiceStatus">
+    <span>Rectification Service</span>
+  </div>
+  <div class="status-item" [class.status-success]="reportServiceStatus" [class.status-error]="!reportServiceStatus">
+    <span>Report Service</span>
+  </div>
+  <button class="btn btn-sm btn-secondary" (click)="toggleStatusIndicator()">Hide</button>
+</div>
+-->
+<router-outlet></router-outlet>
