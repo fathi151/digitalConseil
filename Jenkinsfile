@@ -67,7 +67,7 @@ pipeline {
                                 mvn sonar:sonar ^
                                   -Dsonar.projectKey=${svc} ^
                                   -Dsonar.host.url=${sonarUrl} ^
-                                  -Dsonar.login=${sonarToken}
+                                  -Dsonar.token=${sonarToken}
                             """
                         }
                     }
