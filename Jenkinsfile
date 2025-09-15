@@ -62,11 +62,13 @@ pipeline {
                     microservices.each { svc ->
                         dir("BackEsprit/SmartConseil-Back/microservices/${svc}") {
                             withSonarQubeEnv('sonarqube') {
+                                def sonarUrl = env.SONAR_HOST_URL.trim()
+                                def sonarToken = env.SONAR_AUTH_TOKEN.trim()
                                 bat """
                                     mvn sonar:sonar ^
                                       -Dsonar.projectKey=${svc} ^
-                                      -Dsonar.host.url=%SONAR_HOST_URL% ^
-                                      -Dsonar.login=%SONAR_AUTH_TOKEN%
+                                      -Dsonar.host.url=${sonarUrl} ^
+                                      -Dsonar.login=${sonarToken}
                                 """
                             }
                         }
