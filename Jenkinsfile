@@ -55,7 +55,7 @@ pipeline {
                         mvn sonar:sonar ^
                           -Dsonar.projectKey=SmartConseil ^
                           -Dsonar.host.url=http://localhost:9000 ^
-                          -Dsonar.token=YOUR_TOKEN
+                          -Dsonar.token=sqp_efc2c41fcb0db3e65a6be1f3be98c4774a148041
                     """
                 }
             }
