@@ -1,23 +1,13 @@
-# Use Node.js 18 as base image
-FROM node:18-alpine
-
-# Set working directory
+# Stage 1: Build Angular
+FROM node:18-alpine AS build
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies (including devDependencies for Angular CLI)
 RUN npm ci
-
-# Install Angular CLI globally
-RUN npm install -g @angular/cli@16.2.16
-
-# Copy source code
 COPY . .
+RUN npm run build -- --output-path=dist --configuration=production
 
-# Expose port 4200
+# Stage 2: Serve with nginx
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 4200
-
-# Start the Angular development server
-CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--disable-host-check"]
+CMD ["nginx", "-g", "daemon off;"]
