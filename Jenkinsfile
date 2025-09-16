@@ -50,27 +50,13 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                script {
-                    def microservices = [
-                        "microservicePlanification",
-                        "microserviceRapport",
-                        "microserviceRectification",
-                        "microserviceUser",
-                        "microserviceConseil"
-                    ]
-
-                    microservices.each { svc ->
-                        dir("BackEsprit/SmartConseil-Back/microservices/${svc}") {
-                            def sonarUrl = "http://localhost:9000"
-                            def sonarToken = "sqp_f92b65d7ecb5a4a140ba0a4c37508c8a2bbac44a"
-                            bat """
-                                mvn sonar:sonar ^
-                                  -Dsonar.projectKey=${svc} ^
-                                  -Dsonar.host.url=${sonarUrl} ^
-                                  -Dsonar.token=${sonarToken}
-                            """
-                        }
-                    }
+                dir('BackEsprit/SmartConseil-Back') {
+                    bat """
+                        mvn sonar:sonar ^
+                          -Dsonar.projectKey=SmartConseil ^
+                          -Dsonar.host.url=http://localhost:9000 ^
+                          -Dsonar.token=YOUR_TOKEN
+                    """
                 }
             }
         }
