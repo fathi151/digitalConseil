@@ -35,7 +35,7 @@ services:
       context: ./BackEsprit/SmartConseil-Back/microservices/microservicePlanification
     container_name: planification-service
     ports:
-      - "8082:8080"
+      - "809:8080"
     depends_on:
       - mysql
     networks:
@@ -51,7 +51,7 @@ services:
       context: ./BackEsprit/SmartConseil-Back/microservices/microserviceRapport
     container_name: rapport-service
     ports:
-      - "8083:8080"
+      - "8087:8080"
     depends_on:
       - mysql
     networks:
@@ -67,7 +67,7 @@ services:
       context: ./BackEsprit/SmartConseil-Back/microservices/microserviceRectification
     container_name: rectification-service
     ports:
-      - "8084:8080"
+      - "8089:8080"
     depends_on:
       - mysql
     networks:
@@ -83,7 +83,7 @@ services:
       context: ./BackEsprit/SmartConseil-Back/microservices/microserviceUser
     container_name: user-service
     ports:
-      - "8085:8080"
+      - "8088:8080"
     depends_on:
       - mysql
     networks:
