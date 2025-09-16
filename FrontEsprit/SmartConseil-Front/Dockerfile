@@ -1,19 +1,23 @@
+# Use Node.js 18 as base image
 FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies (including devDependencies for Angular CLI)
 RUN npm ci
-RUN npm install -g @angular/cli@16.2.16 http-server
+
+# Install Angular CLI globally
+RUN npm install -g @angular/cli@16.2.16
 
 # Copy source code
 COPY . .
 
-# Build Angular pour Docker
-RUN ng build --configuration=docker
-
-# Serve Angular build
-WORKDIR /app/dist/<nom-du-projet-angular>
+# Expose port 4200
 EXPOSE 4200
-CMD ["http-server", "-p", "4200", "-a", "0.0.0.0"]
+
+# Start the Angular development server
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--disable-host-check"]
