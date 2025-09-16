@@ -40,17 +40,17 @@ private baseURL = "http://user-service:8080/auth";
   // Profile management methods
   getUserProfile(email: string): Observable<any> {
     const headers = this.authService.getAuthHeaders();
-    return this.httpClient.get<any>(`http://localhost:8088/api/users/profile?email=${email}`, { headers });
+    return this.httpClient.get<any>(`http://user-service:8080/api/users/profile?email=${email}`, { headers });
   }
 
   updateProfile(profileData: any): Observable<any> {
     const headers = this.authService.getAuthHeaders();
-    return this.httpClient.put<any>(`http://localhost:8088/api/users/profile`, profileData, { headers });
+    return this.httpClient.put<any>(`http://user-service:8080/api/users/profile`, profileData, { headers });
   }
 
   changePassword(passwordData: { currentPassword: string; newPassword: string; confirmPassword: string }): Observable<any> {
     const headers = this.authService.getAuthHeaders();
-    console.log('Making password change request to:', `http://localhost:8088/api/users/change-password`);
+    console.log('Making password change request to:', `http://user-service:8080/api/users/change-password`);
     console.log('Headers:', headers);
     console.log('Request payload:', {
       currentPassword: passwordData.currentPassword ? '***' : 'empty',
@@ -58,18 +58,18 @@ private baseURL = "http://user-service:8080/auth";
       confirmPassword: passwordData.confirmPassword ? '***' : 'empty'
     });
 
-    return this.httpClient.put<any>(`http://localhost:8088/api/users/change-password`, passwordData, { headers });
+    return this.httpClient.put<any>(`http://user-service:8080/api/users/change-password`, passwordData, { headers });
   }
 
   testBackend(): Observable<any> {
-    return this.httpClient.get<any>(`http://localhost:8088/api/users/test`);
+    return this.httpClient.get<any>(`http://user-service:8080/api/users/test`);
   }
 
   // Profile picture methods
   updateProfilePicture(email: string, profilePicture: string): Observable<any> {
     const headers = this.authService.getAuthHeaders();
     const payload = { email, profilePicture };
-    return this.httpClient.put<any>(`http://localhost:8088/api/users/profile-picture`, payload, { headers });
+    return this.httpClient.put<any>(`http://user-service:8080/api/users/profile-picture`, payload, { headers });
   }
 
 }
