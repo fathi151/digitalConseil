@@ -35,7 +35,7 @@ services:
       context: ./BackEsprit/SmartConseil-Back/microservices/microservicePlanification
     container_name: planification-service
     ports:
-      - "809:8080"
+      - "8090:8080"
     depends_on:
       - mysql
     networks:

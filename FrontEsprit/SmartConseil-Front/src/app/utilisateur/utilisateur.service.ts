@@ -8,7 +8,9 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root'
 })
 export class UtilisateurService {
-   private baseURL="http://localhost:8088/auth";
+  // utilisateur.service.ts
+private baseURL = "http://user-service:8080/auth";
+
 
   constructor(private httpClient:HttpClient, private authService: AuthService) { }
 
